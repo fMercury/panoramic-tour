@@ -1,0 +1,21 @@
+body{
+  background-image: url("../resources/color5.png");
+}
+
+
+
+.main-container{
+  background-color: white;
+  color: black;
+  position:relative;
+  width:920px;
+  margin: 0 auto;
+  height:99vh;
+  text-align:center;
+}
+
+#panorama {
+  margin:auto;
+  width: 800px;
+  height: 600px;
+}
