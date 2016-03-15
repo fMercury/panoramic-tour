@@ -1,7 +1,7 @@
 var http = require('http');
 var express = require('express');
 var app  = express();
-const PORT=8080;
+var port =process.env.PORT|| 8080;
 
 //Create a server
 var server = http.createServer(app);
@@ -13,7 +13,7 @@ app.get('/', function(req, res){
 });
 
 //Lets start our server
-server.listen(PORT, function(){
+server.listen(port, function(){
     //Callback triggered when server is successfully listening. Hurray!
-    console.log("Server listening on: http://localhost:%s", PORT);
+    console.log("Server listening on: http://localhost:%s", port);
 });

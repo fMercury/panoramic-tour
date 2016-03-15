@@ -1,0 +1,24 @@
+{
+  "name": "panorama-viewer",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "angular": "^1.5.0",
+    "express": "^4.13.4",
+    "pannellum": "^2.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matanegui/panoramic-tour.git"
+  },
+  "author": "Matías Cincunegui",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matanegui/panoramic-tour/issues"
+  }
+}
