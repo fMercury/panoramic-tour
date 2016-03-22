@@ -9,7 +9,11 @@ var server = http.createServer(app);
 app.use("/", express.static(__dirname + "/"));
 
 app.get('/', function(req, res){
-	res.sendFile(__dirname + '/views/index.html');
+	res.sendFile(__dirname + '/views/home.html');
+});
+
+app.get('/tour', function(req, res){
+	res.sendFile(__dirname + '/views/tour.html');
 });
 
 //Lets start our server
