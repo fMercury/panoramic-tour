@@ -12,8 +12,8 @@ app.get('/', function(req, res){
 	res.sendFile(__dirname + '/views/home.html');
 });
 
-app.get('/tour', function(req, res){
-	res.sendFile(__dirname + '/views/tour.html');
+app.get('/testclient', function(req, res){
+	res.sendFile(__dirname + '/views/test-client.html');
 });
 
 //Lets start our server

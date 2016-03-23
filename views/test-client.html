@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Ensure correct rendering and touch zooming-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Pannellum-->
+    <script src="/node_modules/pannellum/build/pannellum.js"></script>
+    <link rel="stylesheet" type="text/css" href="/node_modules/pannellum/build/pannellum.css">
+    <!--Angular-->
+    <script src="/node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="/modules/main.js"></script>
+    <!--JQuery-->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <!--Bootstrap-->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--Custom styling-->
+    <link rel="stylesheet" type="text/css" href="./style/home.css">
+  </head>
+  <body ng-app="panoramicApp">
+    <div id="navbar" class="navbar-collapse">
+      <!--Top navigation bar-->
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#" style="color:white">Client Name and/or Logo</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="flex-container container-fluid dark-body full-height-container" style="background-image: url('../resources/bluegradient.jpg')";>
+      <div class="container">
+        <!-- Three columns of text below the carousel -->
+        <div class="row">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-4">
+                <div class="flex-container-item">
+                  <h1>This is who we are.</h1>
+                  <h2> A summary of the services and products we offer for our customers. </h2>
+                </div>
+                <div class="flex-container-item featturete">
+                  <h3>Sit amet.</h3>
+                  <p>Suspendisse malesuada laoreet pellentesque. In pulvinar neque ac ipsum commodo, quis tristique erat blandit. </p>
+                </div>
+                <div class="flex-container-item featturete">
+                  <h3>Qui officia.</h3>
+                  <p>Praesent tincidunt justo a metus fringilla, nec iaculis lorem dignissim. </p>
+                </div>
+                <div class="flex-container-item featturete">
+                  <h3>Occaecat cupidatat.</h3>
+                  <p>Mauris blandit porttitor neque in cursus. Quisque in porta nunc, sed elementum justo. </p>
+                </div>
+                <div class="flex-container-item featturete">
+                  <h3>Donec feugiat mi odio.</h3>
+                  <p>Sit amet pharetra metus facilisis sit amet. </p>
+                </div>
+          </div>
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-5">
+            <h1>See for yourself.</h1>
+            <div class="flex-container-item" ng-controller="mainController as mainCtrl">
+              <div id="panorama-container">
+          	    <div id="panorama-dummy"></div>
+          	    <div id="panorama"></div>
+          		</div>
+            </div>
+            <div class="flex-container-item">
+              <h1>Talk to us.</h1>
+                <form class="form-horizontal" role="form" >
+                  <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
+                      <div class="input-el" max-width: 100%;>
+                        <input type="text" class="featturete  form-control" id="name" placeholder="Name">
+                      </div>
+                      <div class="input-el">
+                        <input type="email" class=" featturete  form-control" id="email" placeholder="Email">
+                      </div>
+                      <div class="input-el">
+                        <textarea class="featturete  form-control" rows="3" placeholder="Yor message here" required></textarea>
+                      </div>
+                      <div class="input-el text-center">
+                          <button type="submit" class="featturete  btn btn-default" style="width:100%;">Submit</button>
+                      </div>
+                    </div>
+                </form>
+            </div>
+          </div>
+          <div class="col-md-1">
+            <!--Esto va para el footer
+            <span class="featturete"><i class="fa fa-facebook"></i></span>
+            <span class="featturete"><i class="fa fa-twitter"></i></span>
+            <span class="featturete"><i class="fa fa-google-plus"></i></span>
+            <span class="featturete"><i class="fa fa-instagram"></i></span>
+            <span class="featturete"><i class="fa fa-youtube"></i></span>
+            -->
+          </div>
+        </div><!-- /.row -->
+        <br>
+        <div class="row">
+              <div class="navbar-text" style="width:100%;text-align:center;">
+                <a href="#"><i class="fa fa-facebook fa-3x"></i></a>
+                <a href="#"><i class="fa fa-twitter fa-3x"></i></a>
+                <a href="#"><i class="fa fa-google-plus fa-3x"></i></a>
+                <a href="#"><i class="fa fa-instagram fa-3x"></i></a>
+                <a href="#"><i class="fa fa-youtube fa-3x"></i></a>
+              </div>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+</html>

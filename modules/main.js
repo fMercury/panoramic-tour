@@ -11,7 +11,7 @@ app.controller("mainController",["$scope", function($scope){
       },
       "scenes": {
           "circle": {
-              "title": "Camino",
+              "title": "The Gates",
               "hfov": 110,
               "pitch": -3,
               "yaw": 117,
@@ -22,20 +22,20 @@ app.controller("mainController",["$scope", function($scope){
                       "pitch": -2.1,
                       "yaw": 132.9,
                       "type": "scene",
-                      "text": "Ir a la Casa",
+                      "text": "Go to the Entrance",
                       "sceneId": "house"
                   },
                   {
                     "pitch": 0.6266281319951438,
                     "yaw": -103.70267864413779,
                     "type": "info",
-                    "text": "Salida"
+                    "text": "The road stretches far away."
                   }
               ]
           },
 
           "house": {
-              "title": "Casa",
+              "title": "The Entrance",
               "hfov": 110,
               "yaw": 5,
               "type": "equirectangular",
@@ -45,7 +45,7 @@ app.controller("mainController",["$scope", function($scope){
                       "pitch": -0.6,
                       "yaw": 37.1,
                       "type": "scene",
-                      "text": "Ir al camino",
+                      "text": "Go to the Gates",
                       "sceneId": "circle",
                       "targetYaw": -23,
                       "targetPitch": 2
@@ -54,13 +54,13 @@ app.controller("mainController",["$scope", function($scope){
                     "pitch": 2.1489150553773366,
                     "yaw": 169.69642402195143,
                     "type": "info",
-                    "text": "Entrada al Museo"
+                    "text": "Museum entrance."
                   },
                   {
                     "pitch": -1.0721990198467852,
                     "yaw": -11.960274462618134,
                     "type": "info",
-                    "text": "Casa Chica"
+                    "text": "Small house"
                   }
               ]
           }
