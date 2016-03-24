@@ -61,11 +61,51 @@
           </div>
           <div class="col-md-5">
             <h1>See for yourself.</h1>
-            <div class="flex-container-item" ng-controller="pannellumController as mainCtrl">
+            <div class="flex-container-item" ng-controller="javascriptPanoramaController as mainCtrl">
               <div id="panorama-container">
-          	    <div id="panorama-dummy"></div>
-          	    <div id="panorama"></div>
-          		</div>
+                <div id="panorama-dummy"></div>
+              <div id="panoramajavascript"></div>
+                <script type="text/javascript">
+                panoramajavascriptDiv=document.getElementById('panoramajavascript'); dragStartX=0;
+                dragStartY=0;
+                deltaX=3.0;
+                deltaY=0.0;
+                backgroundPosX=0.0;
+                backgroundPosY=-70.0;
+                timeout=20;
+                timerId=null;
+                function dragStart(e) {
+                if (!e) var e = window.event;
+                panoramajavascriptDiv.onmousemove=drag;
+                dragStartX=e.clientX;
+                dragStartY=e.clientY;
+                deltaX=0;
+                deltaY=0;
+                panoramajavascriptDiv.onmouseout=dragStop;
+                if (timerId) {
+                window.clearTimeout(timerId);}
+                timerId=window.setTimeout('scroll()',timeout);}
+                function drag(e) {
+                if (!e) var e = window.event;
+                deltaX=(e.clientX-dragStartX)/5;
+                deltaY=(e.clientY-dragStartY)/5;}
+                function dragStop() {
+                panoramajavascriptDiv.onmousemove=null;
+                panoramajavascriptDiv.onmouseout=null;
+                if (timerId) {
+                window.clearTimeout(timerId);}}
+                function scroll() {
+                backgroundPosX-=deltaX;
+                backgroundPosY=Math.max(-150,Math.min(-
+                20,backgroundPosY-deltaY));
+                panoramajavascriptDiv.style.backgroundPosition=Math.floor
+                (backgroundPosX)+"px "+Math.floor(backgroundPosY)+"px";
+                timerId=window.setTimeout('scroll()',timeout);}
+                panoramajavascriptDiv.onmousedown=dragStart;
+                panoramajavascriptDiv.onmouseup=dragStop;
+                timerId=window.setTimeout('scroll()',50);
+                </script>
+              </div>
             </div>
             <div class="flex-container-item">
               <h1>Talk to us.</h1>

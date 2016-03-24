@@ -1,12 +1,12 @@
 var app = angular.module("panoramicApp",[]);
 
-app.controller("mainController",["$scope", function($scope){
+app.controller("pannellumController",["$scope", function($scope){
 
   //Panorama div config
   pannellum.viewer('panorama', {
     "default": {
       "firstScene": "circle",
-      "author": "Matías Cincunegui",
+      "author": "Panoramic Demo",
       "sceneFadeDuration": 3000
       },
       "scenes": {
@@ -68,5 +68,13 @@ app.controller("mainController",["$scope", function($scope){
       "autoLoad": true,
       "hotSpotDebug": true
   });
+
+}]);
+
+app.controller("javascriptPanoramaController",["$scope", function($scope){
+
+}]);
+
+app.controller("centerController",["$scope", function($scope){
 
 }]);
