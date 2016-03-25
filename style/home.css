@@ -19,23 +19,40 @@ body{
 }
 
 .purple-container{
-  background-color: #1C235A;
+  background-color: #131E39;
   padding: 20px 0px 10px 0px;
   color:white;
 }
 
 .purple-container .btn{
   color:#FF9EDF;
-  background-color:#1C235A;
+  background-color:#131E39;
   border-color:#FF9EDF;
-}
-
-.purple-container h1{
-  color:#FF9EDF;
 }
 
 .purple-container div{
   margin: 300 auto;
+}
+
+.purple-container .client-div{
+  width:200px;
+  height:128px;
+  margin: 10px 10px 10px 10px;
+  border: 3px solid;
+  border-color:gray;
+}
+
+.purple-container .client-div img{
+  max-width:100%;
+  max-height:100;
+}
+
+.purple-container .client-div:hover {
+    -moz-transform: translate(-2px, -2px);
+    -ms-transform: translate(-2px, -2px);
+    -o-transform: translate(-2px, -2px);
+    -webkit-transform: translate(-2px, -2px);
+    transform: translate(-2px, -2px)
 }
 
 .fullscreen-container{
@@ -53,6 +70,7 @@ body{
   align-items: center;
   justify-content: center;
   vertical-align: middle;
+  flex-wrap:wrap;
 }
 
 .flex-container-item{

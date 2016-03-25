@@ -18,7 +18,105 @@
     <!--Custom styling-->
     <link rel="stylesheet" type="text/css" href="./style/home.css">
   </head>
-  <body>
-    holu
+  <body ng-app="siteApp">
+    <!--Top navigation bar-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Client Center</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="/center">Client Center</a></li>
+            <li><a href="/testclient">Client 1</a></li>
+            <li><a href="/testclient2">Client 2</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid purple-container full-height-container" style="padding-top:50px;">
+      <div class="container">
+        <!-- Three columns of text below the carousel -->
+        <div class="row text-center">
+          <h1> Our clients </h1>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <h3> Search by... </h3>
+            <div class="input-el">
+              <input type="text" class="form-control" id="name" placeholder="Name">
+            </div>
+            <div class="input-el">
+              <select type="text" class="form-control" id="type" placeholder="Type">
+                <option value="" disabled selected hidden>Type</option>
+                <option> Clothing </option>
+                <option> Food & Drink </option>
+                <option> IT </option>
+                <option> Other </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-10 flex-container">
+            <div class="client-div">
+              <img src="../resources/logos/1.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/2.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/3.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/13.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/4.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/5.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/6.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/14.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/7.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/8.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/9.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/15.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/10.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/11.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/12.jpg">
+            </div>
+            <div class="client-div">
+              <img src="../resources/logos/16.jpg">
+            </div>
+          </div>
+        </div>
+
+        </div><!-- /.row -->
+      </div>
+    </div>
   </body>
 </html>
