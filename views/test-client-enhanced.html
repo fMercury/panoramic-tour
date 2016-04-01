@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <!--Custom styling-->
     <link rel="stylesheet" type="text/css" href="./style/home.css">
+    <!--Socket IO for chat-->
+    <script src="../node_modules/socket.io-client/socket.io.js"></script>
   </head>
   <body ng-app="siteApp">
     <div id="navbar" class="navbar-collapse">
@@ -121,21 +123,35 @@
                 </script>
               </div>
             </div>
-            <div class="flex-container-item">
+            <div class="flex-container-item" ng-controller="clientController as clientCtrl">
               <h1>Talk to us.</h1>
-                <form class="form-horizontal" role="form" >
+                <form id="chat-form" class="form-horizontal" role="form" ng-submit="sendMessage();">
                   <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
-                      <div class="input-el" max-width: 100%;>
-                        <input type="text" class="featturete  form-control" id="name" placeholder="Name">
+                      <div class="row input-el" max-width: 100%;>
+                        <div class="col-md-6">
+                          <input type="text" class="featturete  form-control" id="name" placeholder="Name" ng-model="user" required>
+                        </div>
+                        <div class="col-md-6">
+                          <input type="email" class=" featturete  form-control" id="email" placeholder="Email" ng-model="mail" required>
+                        </div>
                       </div>
                       <div class="input-el">
-                        <input type="email" class=" featturete  form-control" id="email" placeholder="Email">
+                        <div id="chatbox">
+                          <p style="color:gray" ng-hide="chat.length || noAdmins">Si hay un administrador conectado, puedes ver su respuesta aquí. De lo contrario, un mail con tu mensaje será enviado a nuestro correo y respondido a la brevedad.</p>
+                          <p ng-repeat="chatobj in chat"> <b style="color:#F7819F">{{chatobj.username}}: </b> {{chatobj.message}} </p>
+                          <p ng-show="noAdmins"> <b style="color:gray;">No hay administradores conectados en este momento. Se enviará un mail con tu consulta.</b></p>
+                        </div>
                       </div>
-                      <div class="input-el">
-                        <textarea class="featturete  form-control" rows="3" placeholder="Yor message here" required></textarea>
-                      </div>
-                      <div class="input-el text-center">
-                          <button type="submit" class="featturete  btn btn-default" style="width:100%;">Submit</button>
+                      <div class="row input-el text-center">
+                        <div class="col-md-12">
+                          <div class="input-group">
+                            <textarea id="message-area" ng-disabled="noAdmins" class="featturete  form-control" rows="1"  placeholder="Escribe tu consulta aquí." ng-model="currentMessage" required my-enter="sendMessage();"></textarea>
+                            <div class="input-group-btn">
+                              <button type="submit" form="chat-form" class="featturete btn btn-default">Enviar </button>
+                            </div><!-- /btn-group -->
+                          </div>
+                        </div>
+
                       </div>
                     </div>
                 </form>

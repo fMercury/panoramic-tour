@@ -1,5 +1,39 @@
 var app = angular.module("siteApp",[]);
 
+//Scoket IO
+app.factory('socket', ['$rootScope', function ($rootScope) {
+  var socket = io.connect();
+
+  return {
+    on: function (eventName, callback) {
+      function wrapper() {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      }
+
+      socket.on(eventName, wrapper);
+
+      return function () {
+        socket.removeListener(eventName, wrapper);
+      };
+    },
+
+    emit: function (eventName, data, callback) {
+      socket.emit(eventName, data, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          if(callback) {
+            callback.apply(socket, args);
+          }
+        });
+      });
+    }
+  };
+}]);
+
+//Enter key press directive
 app.directive('myEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
@@ -13,6 +47,7 @@ app.directive('myEnter', function () {
         });
     };
 });
+
 
 app.controller("pannellumController",["$scope", function($scope){
 
@@ -89,55 +124,95 @@ app.controller("javascriptPanoramaController",["$scope", function($scope){
 
 }]);
 
-app.controller("clientController",["$scope", function($scope){
-  var client = io();
+app.controller("clientController",["$scope","socket", function($scope,client){
 
   $scope.user = "";
   $scope.mail="";
   $scope.currentMessage="";
+  $scope.adminID=undefined;
   $scope.chat=[];
+  $scope.noAdmins=false;
 
 
   $scope.sendMessage = function(){
-    var msg= {"username" : $scope.user, "mail":$scope.mail, "message": $scope.currentMessage};
-    client.emit("chat message", msg);
-    $scope.chat.push(msg);
+    if (!$scope.noAdmins){
+      var msg= {"username" : $scope.user, "mail":$scope.mail, "to": $scope.adminID, "message": $scope.currentMessage};
+      client.emit("chat message", msg);
+      $scope.chat.push(msg);
+      $scope.currentMessage="";
+      $("#message-area").focus();
+      $('#chatbox').animate({scrollTop: $('#chatbox')[0].scrollHeight});
+    }
+  };
+
+  client.on("admin disconnected", function(){
+    client.emit("leave room");
+  });
+
+  client.on("no admins", function(){
+    $scope.noAdmins=true;
+  });
+
+  client.on("send message", function(data){
     //Scroll chatbox to bottom
+    $scope.chat.push(data);
+    //Scroll chatbox to bottom
+    $('#chatbox').animate({scrollTop: $('#chatbox')[0].scrollHeight});
+  });
+
+  client.on("set admin id", function(data){
+    $scope.adminID = data;
+  });
+}]);
+
+app.controller("adminController",["$scope","socket", function($scope,client){
+
+  $scope.currentChats=[];
+  $scope.currentTab=0;
+  $scope.currentMessage="";
+
+  //Admin connect
+  client.emit("admin connect");
+
+  $scope.getChatNumber=function(username){
+    var i=0;
+    var found=false;
+    while(!found && i<$scope.currentChats.length){
+      if ($scope.currentChats[i].client==username){
+        found=true;
+      }
+      else{i++;}
+    }
+    return i;
+  }
+
+  $scope.sendMessage = function(){
+    var msg={"username" : "Administrador", "mail":"none", "to":$scope.currentChats[$scope.currentTab-1].id ,"message": $scope.currentMessage};
+    $scope.currentChats[$scope.currentTab-1].messages.push(msg);
+    client.emit("chat message",msg );
     $('#chatbox').animate({scrollTop: $('#chatbox')[0].scrollHeight});
     $scope.currentMessage="";
     $("#message-area").focus();
   };
 
-  client.on("admin disconnected", function(){
-    console.log("EL QUE ME ATENDIA SE FUE!!!");
-    client.emit("leave room");
-  })
-}]);
-
-app.controller("adminController",["$scope", function($scope){
-  var client = io();
-
-  $scope.chats=[];
-
-
-  //Admin connect
-  client.emit("admin connect");
-
-  this.sendMessage = function(msg){
-    client.emit("chat message", {"username" : $scope.user, "mail":$scope.mail, "message": $scope.currentMessage});
-  };
+  this.setActiveChat = function(value){
+    $scope.currentTab=value;
+    $('#chatbox').animate({scrollTop: $('#chatbox')[0].scrollHeight});
+    $("#message-area").focus();
+  }
 
   //Socket IO event handlers
-  client.on("new chat", function(data){
-    console.log(data);
+  client.on("new chat", function(data, id){
     var messages = [];
-    messages.push(data.message);
-    $scope.chats.push({"client" : data.username, "messages":messages });
+    messages.push(data);
+    $scope.currentChats.push({"client" : data.username, "id":id, "messages":messages });
   });
 
   client.on("send message", function(data){
-    console.log(data);
-
+    if (data.username!="Administrador"){
+      $scope.currentChats[$scope.getChatNumber(data.username)].messages.push(data);
+    }
+      $('#chatbox').animate({scrollTop: $('#chatbox')[0].scrollHeight});
   });
 
 }]);

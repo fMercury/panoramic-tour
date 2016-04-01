@@ -40,7 +40,6 @@ module.exports = function (server) {
         //Admin connection
         socket.on("admin connect", function(data){
           connectedAdmins.push({"admin_id" : socket.id, "clients" : 0});
-          socket.join(socket.id);
           connectedClients[socket.id].room=socket.id;
           connectedClients[socket.id].role="admin";
           io.to(socket.id).emit("join room", socket.id);
@@ -54,24 +53,28 @@ module.exports = function (server) {
             if (connectedAdmins.length){
               var adminNumber = module.assignAdmin();
               connectedClients[socket.id].room = connectedAdmins[adminNumber].admin_id;
-              socket.join(connectedAdmins[adminNumber].admin_id);
               connectedAdmins[adminNumber].clients++;
-              io.to(connectedAdmins[adminNumber].admin_id).emit("new chat", data);
+              io.to(connectedAdmins[adminNumber].admin_id).emit("new chat", data, socket.id);
+              io.to(socket.id).emit("set admin id",connectedAdmins[adminNumber].admin_id );
             }
             //otherwise, send email
             else{
-              //To-do
+              io.to(socket.id).emit("no admins");
             }
           }
           //Client connected, send message to room
           else{
-            io.to(connectedClients[socket.id]["room"]).emit("send message", data);
+            if (typeof data.to === "undefined") {
+              io.to(connectedClients[socket.id]["room"]).emit("send message", data);
+            }
+            else{
+              io.to(data.to).emit("send message", data);
+            }
           }
       	});
 
         //Client leave room
         socket.on('leave room', function(){
-          socket.leave(connectedClients[socket.id].room);
           connectedClients[socket.id].room="none";
         });
 
@@ -81,7 +84,9 @@ module.exports = function (server) {
           if (connectedClients[socket.id].role=="user"){
             if (connectedClients[socket.id].room!="none"){
               var adminNumber = module.getAdminIndex(connectedClients[socket.id].room);
-              connectedAdmins[adminNumber].clients--;
+              if (!typeof connectedAdmins[adminNumber] === "undefined") {
+                connectedAdmins[adminNumber].clients--;
+              }
             }
             delete connectedClients[socket.id];
           }

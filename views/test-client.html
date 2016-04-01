@@ -97,14 +97,15 @@
                       </div>
                       <div class="input-el">
                         <div id="chatbox">
-                          <p style="color:gray" ng-hide="chat.length">Si hay un administrador conectado, puedes ver su respuesta aquí. De lo contrario, un mail con tu mensaje será enviado a nuestro correo y respondido a la brevedad.</p>
+                          <p style="color:gray" ng-hide="chat.length || noAdmins">Si hay un administrador conectado, puedes ver su respuesta aquí. De lo contrario, un mail con tu mensaje será enviado a nuestro correo y respondido a la brevedad.</p>
                           <p ng-repeat="chatobj in chat"> <b style="color:#F7819F">{{chatobj.username}}: </b> {{chatobj.message}} </p>
+                          <p ng-show="noAdmins"> <b style="color:gray;">No hay administradores conectados en este momento. Se enviará un mail con tu consulta.</b></p>
                         </div>
                       </div>
                       <div class="row input-el text-center">
                         <div class="col-md-12">
                           <div class="input-group">
-                            <textarea id="message-area" class="featturete  form-control" rows="1"  placeholder="Tu mensaje aquí" ng-model="currentMessage" required my-enter="sendMessage();"></textarea>
+                            <textarea id="message-area" ng-disabled="noAdmins" class="featturete  form-control" rows="1"  placeholder="Escribe tu consulta aquí." ng-model="currentMessage" required my-enter="sendMessage();"></textarea>
                             <div class="input-group-btn">
                               <button type="submit" form="chat-form" class="featturete btn btn-default">Enviar </button>
                             </div><!-- /btn-group -->
