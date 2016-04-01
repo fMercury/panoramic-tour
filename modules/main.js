@@ -1,5 +1,19 @@
 var app = angular.module("siteApp",[]);
 
+app.directive('myEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.myEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
 app.controller("pannellumController",["$scope", function($scope){
 
   //Panorama div config
@@ -72,6 +86,59 @@ app.controller("pannellumController",["$scope", function($scope){
 }]);
 
 app.controller("javascriptPanoramaController",["$scope", function($scope){
+
+}]);
+
+app.controller("clientController",["$scope", function($scope){
+  var client = io();
+
+  $scope.user = "";
+  $scope.mail="";
+  $scope.currentMessage="";
+  $scope.chat=[];
+
+
+  $scope.sendMessage = function(){
+    var msg= {"username" : $scope.user, "mail":$scope.mail, "message": $scope.currentMessage};
+    client.emit("chat message", msg);
+    $scope.chat.push(msg);
+    //Scroll chatbox to bottom
+    $('#chatbox').animate({scrollTop: $('#chatbox')[0].scrollHeight});
+    $scope.currentMessage="";
+    $("#message-area").focus();
+  };
+
+  client.on("admin disconnected", function(){
+    console.log("EL QUE ME ATENDIA SE FUE!!!");
+    client.emit("leave room");
+  })
+}]);
+
+app.controller("adminController",["$scope", function($scope){
+  var client = io();
+
+  $scope.chats=[];
+
+
+  //Admin connect
+  client.emit("admin connect");
+
+  this.sendMessage = function(msg){
+    client.emit("chat message", {"username" : $scope.user, "mail":$scope.mail, "message": $scope.currentMessage});
+  };
+
+  //Socket IO event handlers
+  client.on("new chat", function(data){
+    console.log(data);
+    var messages = [];
+    messages.push(data.message);
+    $scope.chats.push({"client" : data.username, "messages":messages });
+  });
+
+  client.on("send message", function(data){
+    console.log(data);
+
+  });
 
 }]);
 

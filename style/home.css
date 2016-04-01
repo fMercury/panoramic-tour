@@ -73,6 +73,10 @@ body{
   flex-wrap:wrap;
 }
 
+.flex-container .top{
+  vertical-align: top;
+}
+
 .flex-container-item{
   margin: 0px 0px 30px 0px;
 }
@@ -127,14 +131,15 @@ body{
    color: #97E9FF;
  }
 
-input.featturete, textarea.featturete{
+input.featturete, textarea.featturete, textarea.featturete[readonly]{
   border:2px solid;
   border-color: #97E9FF;
   border-radius: 3px;
   background-color: transparent;
   padding: 10px 10px 10px 10px;
   color: #97E9FF;
-  text-align: justify;
+  resize: none;
+  margin:2px 2px 2px 2px;
 }
 
 button.featturete{
@@ -143,6 +148,7 @@ button.featturete{
   border-radius: 3px;
   background-color: #8BBFFF;
   padding: 10px 10px 10px 10px;
+  margin: 2px 2px 2px 2px;
   color: #424242;
   text-align: justify;
 }
@@ -152,8 +158,22 @@ button.featturete{
     padding: 0px 10px 0px 10px;
 }
 
-/* Client center easing animations */
+#chatbox{
+  border:2px solid;
+  border-color: #97E9FF;
+  border-radius: 3px;
+  padding: 10px 10px 10px 10px;
+  height:140px;
+  max-height:140px;
+  overflow:auto;
+}
 
+#chatbox p{
+  margin-bottom: 3px;
+}
+
+
+/* Client center easing animations */
 
  #panorama-container {
      display: inline-block;

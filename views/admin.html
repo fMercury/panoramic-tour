@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Ensure correct rendering and touch zooming-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Pannellum-->
+    <script src="/node_modules/pannellum/build/pannellum.js"></script>
+    <link rel="stylesheet" type="text/css" href="/node_modules/pannellum/build/pannellum.css">
+    <!--Angular-->
+    <script src="/node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="/modules/main.js"></script>
+    <!--JQuery-->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <!--Bootstrap-->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--Custom styling-->
+    <link rel="stylesheet" type="text/css" href="./style/home.css">
+    <!--Socket IO for chat-->
+    <script src="../node_modules/socket.io-client/socket.io.js"></script>
+  </head>
+  <body ng-app="siteApp">
+    <div class=" container-fluid dark-body full-height-container" style="padding-top:50px;background-image: url('../resources/bluegradient.jpg')";>
+      <div class="container">
+        <div class="flex-container-item" ng-controller="adminController as adminCtrl">
+          <h1>Chats</h1>
+          <ul class="nav nav-tabs">
+                <li class="active"><a href="#">Opciones de administrador</a></li>
+                <li ng-repeat="chat in chats"><a href="#">{{chat.client}}</a></li>
+          </ul>
+            <form id="chat-form" class="form-horizontal" role="form" ng-submit="adminCtrl.sendMessage();">
+              <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
+                  </div>
+                  <div class="input-el">
+                    <textarea class="featturete  form-control" rows="8" placeholder="Si hay un administrador conectado, puedes ver su respuesta aquí. De lo contrario, un mail con tu mensaje será enviado a nuestro correo y respondido a la brevedad."></textarea>
+                  </div>
+                  <div class="row input-el text-center">
+                    <div class="col-md-12">
+                      <div class="input-group">
+                        <textarea class="featturete  form-control" rows="1"  placeholder="Tu mensaje aquí" ng-model="currentMessage" required></textarea>
+                        <div class="input-group-btn">
+                          <button type="submit" form="chat-form" class="featturete btn btn-default">Enviar </button>
+                        </div><!-- /btn-group -->
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
