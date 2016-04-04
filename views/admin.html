@@ -22,8 +22,8 @@
       <div class="container">
         <div class="flex-container-item" ng-controller="adminController as adminCtrl">
           <h1>Chats</h1>
-          <ul class="nav nav-tabs" style="color:white;">
-                <li ng-class="{active:currentTab==0}" ng-click="adminCtrl.setActiveChat(0);"><a>Opciones de administrador</a></li>
+          <ul class="nav nav-tabs" id="chat-nav-bar">
+                <li  ng-class="{active:currentTab==0}" ng-click="adminCtrl.setActiveChat(0);"><a >Opciones de administrador</a ></li>
                 <li ng-repeat="chat in currentChats" ng-value="$index"  ng-click="adminCtrl.setActiveChat($index+1);" ng-class="{active:currentTab==$index+1}"><a>{{chat.client}}</a></li>
           </ul>
             <h1 ng-show="currentTab==0" style="color:white;"> Nuevas pestañas aparecerán cuando haya chats. </h1>
@@ -33,7 +33,7 @@
                   <div class="input-el">
                     <div id="chatbox">
                       <p style="color:gray" ng-hide="currentChats[currentTab-1].messages.length">No hay mensajes en este chat.</p>
-                      <p ng-repeat="chatobj in currentChats[currentTab-1].messages"> <b style="color:#F7819F">{{chatobj.username}}: </b> {{chatobj.message}} </p>
+                      <p ng-repeat="chatobj in currentChats[currentTab-1].messages"> <b  ng-class="{'lightyellow' : chatobj.username!='Administrador', 'lightpink' : chatobj.username=='Administrador'}">{{chatobj.username}}: </b> {{chatobj.message}} </p>
                     </div>
                   </div>
                   <div class="row input-el text-center">

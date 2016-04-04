@@ -98,7 +98,7 @@
                       <div class="input-el">
                         <div id="chatbox">
                           <p style="color:gray" ng-hide="chat.length || noAdmins">Si hay un administrador conectado, puedes ver su respuesta aquí. De lo contrario, un mail con tu mensaje será enviado a nuestro correo y respondido a la brevedad.</p>
-                          <p ng-repeat="chatobj in chat"> <b style="color:#F7819F">{{chatobj.username}}: </b> {{chatobj.message}} </p>
+                          <p ng-repeat="chatobj in chat"> <b  ng-class="{'lightyellow' : chatobj.username!='Administrador', 'lightpink' : chatobj.username=='Administrador'}">{{chatobj.username}}: </b> {{chatobj.message}} </p>
                           <p ng-show="noAdmins"> <b style="color:gray;">No hay administradores conectados en este momento. Se enviará un mail con tu consulta.</b></p>
                         </div>
                       </div>
