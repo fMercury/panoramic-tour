@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Ensure correct rendering and touch zooming-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Pannellum-->
+    <script src="/node_modules/pannellum/build/pannellum.js"></script>
+    <link rel="stylesheet" type="text/css" href="/node_modules/pannellum/build/pannellum.css">
+    <!--Angular-->
+    <script src="/node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="/modules/app.js"></script>
+    <script type="text/javascript" src="/modules/centerAdminController.js"></script>
+    <!--JQuery-->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <!--Bootstrap-->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--Custom styling-->
+    <link rel="stylesheet" type="text/css" href="./style/home.css">
+  </head>
+  <body ng-app="siteApp">
+    <!--Top navigation bar-->
+    <nav-bar></nav-bar>
+    <div class="container-fluid purple-container full-height-container" style="padding-top:50px;" ng-controller="centerAdminController as centerAdminCtrl">
+      <div class="container">
+        <!-- Three columns of text below the carousel -->
+        <div class="row text-center">
+          <h1> Our clients </h1>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <h3> Search by... </h3>
+            <div class="input-el">
+              <input type="text" class="form-control" id="name" placeholder="Name" ng-model="searchText">
+            </div>
+            <div class="input-el">
+              <select type="text" class="form-control" id="type" placeholder="Type" ng-model="searchType">
+                <option value="" disabled selected hidden>Type</option>
+                <option ng-repeat="type in availableTypes" ng-value="{{value}}"> {{type}} </option>
+              </select>
+            </div>
+            <div class="input-el">
+              <button type="button" class="btn default-btn" ng-click="toggleNewClientForm()"> Nuevo cliente  <span class="glyphicon glyphicon-chevron-down" ng-hide="showNewClientForm"></span> <span class="glyphicon glyphicon-chevron-up" ng-show="showNewClientForm"></span> </button>
+            </div>
+            <form id="new-client-form" role="form" ng-show="showNewClientForm" ng-submit="addClient()">
+              <div class="input-el">
+                <input type="text" class="form-control" id="newName" placeholder="Nombre" ng-model="newClientName" ng-change="generateUrl()" required>
+              </div>
+              <div class="input-el">
+                <input type="text" class="form-control" id="newType" placeholder="Rubro" ng-model="newClientType" required >
+              </div>
+              <div class="input-el">
+                <input type="text" class="form-control" id="newUrl" placeholder="URL del sitio" ng-model="newClientUrl" required>
+              </div>
+              <div class="input-el">
+                <select type="text" class="form-control" id="newTemplate" placeholder="Tipo de plantilla" ng-model="newClientTemplate" required>
+                  <option value="" disabled selected hidden>Tipo de plantilla</option>
+                  <option value="pannellum">Tour panorámico</option>
+                  <option value="panoramic">Foto panorámica</option>
+                  <option value="carousel" disabled>Carrusel</option>
+                  <option value="static" disabled>Foto estática</option>
+                  <option value="iframe" disabled>Iframe</option>
+                </select>
+              </div>
+              <div class="input-el">
+                <button type="submit" form="new-client-form" class="btn default-btn"> Agregar </button>
+              </div>
+            </form>
+            </div>
+          <div class="col-md-10 flex-container">
+            <div ng-repeat="client in clients | filter:{name : searchText} | filter:{type : searchType}" class="client-div">
+              <a href="/client?url={{client.web_url}}"><img ng-src="../resources/logos/{{client.image}}"></a>
+            </div>
+          </div>
+        </div>
+
+        </div><!-- /.row -->
+      </div>
+    </div>
+  </body>
+</html>

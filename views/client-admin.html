@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Ensure correct rendering and touch zooming-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Angular-->
+    <script src="/node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="/modules/app.js"></script>
+    <script type="text/javascript" src="/modules/clientAdminController.js"></script>
+    <!--JQuery-->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <!--Bootstrap-->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--Custom styling-->
+    <link rel="stylesheet" type="text/css" href="./style/home.css">
+    <!--Socket IO for chat-->
+    <script src="../node_modules/socket.io-client/socket.io.js"></script>
+  </head>
+  <body ng-app="siteApp">
+    <div class=" container-fluid dark-body full-height-container" style="padding-top:50px;background-image: url('../resources/bluegradient.jpg')";>
+      <div class="container">
+        <div class="flex-container-item" ng-controller="clientAdminController as adminCtrl">
+          <h1>Chats</h1>
+          <ul class="nav nav-tabs" id="chat-nav-bar">
+                <li  ng-class="{active:currentTab==0}" ng-click="adminCtrl.setActiveChat(0);"><a >Opciones de administrador</a ></li>
+                <li ng-repeat="chat in currentChats" ng-value="$index"  ng-click="adminCtrl.setActiveChat($index+1);" ng-class="{active:currentTab==$index+1}"><a>{{chat.client}}</a></li>
+          </ul>
+            <h1 ng-show="currentTab==0" style="color:white;"> Nuevas pestañas aparecerán cuando haya chats. </h1>
+            <form ng-hide="currentTab==0" id="chat-form" class="form-horizontal" role="form" ng-submit="sendMessage();">
+              <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
+                  </div>
+                  <div class="input-el">
+                    <div id="chatbox">
+                      <p style="color:gray" ng-hide="currentChats[currentTab-1].messages.length">No hay mensajes en este chat.</p>
+                      <p ng-repeat="chatobj in currentChats[currentTab-1].messages"> <b  ng-class="{'lightyellow' : chatobj.username!='Administrador', 'lightpink' : chatobj.username=='Administrador'}">{{chatobj.username}}: </b> {{chatobj.message}} </p>
+                    </div>
+                  </div>
+                  <div class="row input-el text-center">
+                    <div class="col-md-12">
+                      <div class="input-group">
+                        <textarea id="message-area" class="featturete  form-control" rows="1"  placeholder="Tu mensaje aquí" ng-model="currentMessage" required my-enter="sendMessage();"></textarea>
+                        <div class="input-group-btn">
+                          <button type="submit" form="chat-form" class="featturete btn btn-default">Enviar </button>
+                        </div><!-- /btn-group -->
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -8,7 +8,8 @@
     <link rel="stylesheet" type="text/css" href="/node_modules/pannellum/build/pannellum.css">
     <!--Angular-->
     <script src="/node_modules/angular/angular.js"></script>
-    <script type="text/javascript" src="/modules/main.js"></script>
+    <script type="text/javascript" src="/modules/app.js"></script>
+    <script type="text/javascript" src="/modules/clientController.js"></script>
     <!--JQuery-->
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <!--Bootstrap-->
@@ -21,30 +22,7 @@
     <script src="../node_modules/socket.io-client/socket.io.js"></script>
   </head>
   <body ng-app="siteApp">
-    <div id="navbar" class="navbar-collapse">
-      <!--Top navigation bar-->
-      <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Client Name and/or Logo</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li><a href="/">Home</a></li>
-              <li><a href="/center">Client Center</a></li>
-              <li class="active"><a href="/testclient">Client 1</a></li>
-              <li><a href="/testclient2">Client 2</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
+    <nav-bar></nav-bar>
     <div class="flex-container container-fluid dark-body full-height-container" style="padding-top:50px;background-image: url('../resources/bluegradient.jpg')";>
       <div class="container">
         <!-- Three columns of text below the carousel -->
@@ -77,12 +55,7 @@
           </div>
           <div class="col-md-5">
             <h1>See for yourself.</h1>
-            <div class="flex-container-item" ng-controller="pannellumController as mainCtrl">
-              <div id="panorama-container">
-          	    <div id="panorama-dummy"></div>
-          	    <div id="panorama"></div>
-          		</div>
-            </div>
+            <pannellum></pannellum>
             <div class="flex-container-item" ng-controller="clientController as clientCtrl">
               <h1>Talk to us.</h1>
                 <form id="chat-form" class="form-horizontal" role="form" ng-submit="sendMessage();">

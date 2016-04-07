@@ -1,0 +1,90 @@
+<div class="flex-container container-fluid dark-body full-height-container" style="padding-top:50px;background-image: url('../resources/bluegradient.jpg')";>
+  <div class="container">
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-4">
+            <div class="flex-container-item">
+              <h1>This is who we are.</h1>
+              <h2> A summary of the services and products we offer for our customers. </h2>
+            </div>
+            <div class="flex-container-item featturete">
+              <h3>Sit amet.</h3>
+              <p>Suspendisse malesuada laoreet pellentesque. In pulvinar neque ac ipsum commodo, quis tristique erat blandit. </p>
+            </div>
+            <div class="flex-container-item featturete">
+              <h3>Qui officia.</h3>
+              <p>Praesent tincidunt justo a metus fringilla, nec iaculis lorem dignissim. </p>
+            </div>
+            <div class="flex-container-item featturete">
+              <h3>Occaecat cupidatat.</h3>
+              <p>Mauris blandit porttitor neque in cursus. Quisque in porta nunc, sed elementum justo. </p>
+            </div>
+            <div class="flex-container-item featturete">
+              <h3>Donec feugiat mi odio.</h3>
+              <p>Sit amet pharetra metus facilisis sit amet. </p>
+            </div>
+      </div>
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-5">
+        <h1>See for yourself.</h1>
+        <pannellum></pannellum>
+        <div class="flex-container-item" >
+          <h1>Talk to us.</h1>
+            <form id="chat-form" class="form-horizontal" role="form" ng-submit="sendMessage();">
+              <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
+                  <div class="row input-el" max-width: 100%;>
+                    <div class="col-md-6">
+                      <input type="text" class="featturete  form-control" id="name" placeholder="Name" ng-model="user" required>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="email" class=" featturete  form-control" id="email" placeholder="Email" ng-model="mail" required>
+                    </div>
+                  </div>
+                  <div class="input-el">
+                    <div id="chatbox">
+                      <p style="color:gray" ng-hide="chat.length || noAdmins">Si hay un administrador conectado, puedes ver su respuesta aquí. De lo contrario, un mail con tu mensaje será enviado a nuestro correo y respondido a la brevedad.</p>
+                      <p ng-repeat="chatobj in chat"> <b  ng-class="{'lightyellow' : chatobj.username!='Administrador', 'lightpink' : chatobj.username=='Administrador'}">{{chatobj.username}}: </b> {{chatobj.message}} </p>
+                      <p ng-show="noAdmins"> <b style="color:gray;">No hay administradores conectados en este momento. Se enviará un mail con tu consulta.</b></p>
+                    </div>
+                  </div>
+                  <div class="row input-el text-center">
+                    <div class="col-md-12">
+                      <div class="input-group">
+                        <textarea id="message-area" ng-disabled="noAdmins" class="featturete  form-control" rows="1"  placeholder="Escribe tu consulta aquí." ng-model="currentMessage" required my-enter="sendMessage();"></textarea>
+                        <div class="input-group-btn">
+                          <button type="submit" form="chat-form" class="featturete btn btn-default">Enviar </button>
+                        </div><!-- /btn-group -->
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+            </form>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <!--Esto va para el footer
+        <span class="featturete"><i class="fa fa-facebook"></i></span>
+        <span class="featturete"><i class="fa fa-twitter"></i></span>
+        <span class="featturete"><i class="fa fa-google-plus"></i></span>
+        <span class="featturete"><i class="fa fa-instagram"></i></span>
+        <span class="featturete"><i class="fa fa-youtube"></i></span>
+        -->
+      </div>
+    </div><!-- /.row -->
+    <br>
+    <div class="row">
+          <div class="navbar-text" style="width:100%;text-align:center;">
+            <a href="#"><i class="fa fa-facebook fa-3x"></i></a>
+            <a href="#"><i class="fa fa-twitter fa-3x"></i></a>
+            <a href="#"><i class="fa fa-google-plus fa-3x"></i></a>
+            <a href="#"><i class="fa fa-instagram fa-3x"></i></a>
+            <a href="#"><i class="fa fa-youtube fa-3x"></i></a>
+          </div>
+    </div>
+  </div>
+
+</div>
