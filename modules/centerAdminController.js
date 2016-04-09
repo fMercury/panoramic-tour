@@ -1,4 +1,7 @@
-angular.module('siteApp').controller("centerAdminController",["$scope","database", function($scope,database){
+angular.module('siteApp').controller("centerAdminController",["$scope","database",'fileUpload', function($scope,database,fileUpload){
+
+  //File uploader
+
 
   //New client variables
   $scope.newClientName="";
@@ -6,8 +9,15 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
   $scope.newClientUrl="";
   $scope.newClientTemplate="";
   $scope.showNewClientForm=false;
+  $scope.myFile=null;
 
-  this.getTypes = function(){
+  //Get all clients on app start
+  database.getClients({},function(clients){
+    $scope.clients = clients;
+    $scope.availableTypes=$scope.getTypes();
+  });
+
+  $scope.getTypes = function(){
     var types=[];
     for (i in $scope.clients){
       if (!types.includes($scope.clients[i].type)){
@@ -19,13 +29,6 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
 
   $scope.searchText="";
   $scope.searchType="";
-
-  //Get all clients on app start
-  database.getClients({},function(clients){
-    $scope.clients = clients;
-  });
-
-  $scope.availableTypes=this.getTypes();
 
   //Functions
   $scope.toggleNewClientForm = function(){
@@ -39,13 +42,24 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
   $scope.addClient= function(){
     var clientData = {"name" : $scope.newClientName,
                       "type" : $scope.newClientType,
-                      "image" : "12.jpg",               //hardcodero
+                      "image" : $scope.myFile.name,               //hardcodero
                       "web_url": $scope.newClientUrl,
                       "template_type" : $scope.newClientTemplate};   //hardcodero
     database.addClient(clientData, function(){
-        alert("Cliente cargado con éxito!");
-        location.reload();
+        var file = $scope.myFile;
+        var uploadUrl = '/uploadImage';
+        fileUpload.uploadFileToUrl(file, uploadUrl, function(){
+          alert("Cliente cargado con éxito!");
+          location.reload();
+        });
     });
   }
+
+  $scope.uploadFile = function(item){
+    console.log($scope.myFile);
+    var file = $scope.myFile;
+    var uploadUrl = '/uploadImage';
+    fileUpload.uploadFileToUrl(file, uploadUrl);
+  };
 
 }]);

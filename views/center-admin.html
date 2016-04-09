@@ -16,6 +16,8 @@
     <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--File upload-->
+    <script src="../node_modules/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <!--Custom styling-->
     <link rel="stylesheet" type="text/css" href="./style/home.css">
   </head>
@@ -62,6 +64,9 @@
                   <option value="static" disabled>Foto estática</option>
                   <option value="iframe" disabled>Iframe</option>
                 </select>
+              </div>
+              <div class="input-el">
+                <input type="file"  file-model="myFile"/><br/>
               </div>
               <div class="input-el">
                 <button type="submit" form="new-client-form" class="btn default-btn"> Agregar </button>

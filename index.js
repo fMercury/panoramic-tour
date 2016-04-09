@@ -1,6 +1,8 @@
 var http = require('http');
 var express = require('express');
 var bodyParser = require("body-parser");
+var fs = require("fs");
+var fileUpload = require('express-fileupload');
 var app  = express();
 var port =process.env.PORT|| 8080;
 
@@ -10,6 +12,8 @@ var chat = require("./server_modules/chat.js")(server);
 var database = require("./server_modules/database.js")();
 
 app.use(bodyParser());
+//File uploading capabilities
+app.use(fileUpload());
 
 app.use("/", express.static(__dirname + "/"));
 
@@ -58,7 +62,25 @@ app.get('/getClients', function(req, res){
 });
 
 app.post('/addClient', function(req, res){
-	database.addClient(req.body.client, function(){res.end();});
+	database.addClient(req.body.client, function(){
+			res.end();
+	});
+});
+
+app.post('/uploadImage', function(req, res){
+	var sampleFile;
+	if (!req.files) {
+		res.send('No files were uploaded.');
+		return;
+	}
+	file = req.files.file;
+	fs.readFile(file.name, function(err, data) {
+	  var path = __dirname + '/resources/logos/' + file.name;
+		fs.writeFile(path, file.data, "base64", function(err) {
+			if (err){console.log("WRITE ERROR!");};
+			res.end();
+		});
+	});
 });
 
 //Lets start our server
