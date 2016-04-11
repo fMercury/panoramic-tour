@@ -62,4 +62,12 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
     fileUpload.uploadFileToUrl(file, uploadUrl);
   };
 
+  $(document).ready(function(){
+    var logoHeight = $('.client-div img').height();
+    if (logoHeight < 128) {
+        var margintop = (128 - logoHeight) / 2;
+        $('.client-div img').css('margin-top', margintop);
+    }
+  });
+
 }]);
