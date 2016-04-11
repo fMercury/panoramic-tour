@@ -33,8 +33,10 @@ app.get('/center', function(req, res){
 	res.sendFile(__dirname + '/views/center.html');
 });
 
-app.get('/client', function(req, res){
-	database.getClients({"web_url" : req.query.url}, function(docs){
+
+
+app.get('/client/:client_id', function(req, res){
+	database.getClients({"web_url" : req.params.client_id}, function(docs){
 		if (!docs.length){
 			res.sendFile(__dirname + '/views/error.html');
 		}

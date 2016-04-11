@@ -1,4 +1,4 @@
-angular.module('siteApp').controller("clientController",["$scope","socket", function($scope,client){
+angular.module('siteApp').controller("clientController",["$scope","socket","uploader", function($scope,client,uploader){
 
   $scope.user = "";
   $scope.mail="";
@@ -6,7 +6,6 @@ angular.module('siteApp').controller("clientController",["$scope","socket", func
   $scope.adminID=undefined;
   $scope.chat=[];
   $scope.noAdmins=false;
-
 
   $scope.sendMessage = function(){
     if (!$scope.noAdmins){

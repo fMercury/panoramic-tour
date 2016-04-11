@@ -1,4 +1,20 @@
-var app = angular.module("siteApp",["angularFileUpload"]);
+var app = angular.module("siteApp",[], function($locationProvider) {
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false
+    });
+});
+
+//Conditional injector for fileUpload
+app.factory('uploader', ['$location', function ($location) {
+
+  if ($location.url()=="center-admin"){
+    return $injector.get('angularFileUpload');
+  }
+  else return {};
+
+}]);
+
 
 //Scoket IO
 app.factory('socket', ['$rootScope', function ($rootScope) {
