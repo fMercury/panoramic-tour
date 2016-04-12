@@ -17,6 +17,7 @@ angular.module('siteApp').controller("centerController",["$scope","database", fu
   database.getClients({},function(clients){
     $scope.clients = clients;
   });
+
   /*
   $scope.clients = [{
     "name" : "Cossack Spring Pea",
