@@ -18,10 +18,34 @@
     <!--Socket IO for chat-->
     <script src="../node_modules/socket.io-client/socket.io.js"></script>
   </head>
-  <body ng-app="siteApp">
-    <div class=" container-fluid dark-body full-height-container" style="padding-top:50px;background-image: url('../resources/bluegradient.jpg')";>
+  <body ng-app="siteApp" ng-controller="clientAdminController">
+  <div id="navbar" class="navbar-collapse">
+    <!--Top navigation bar-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Panel de administración</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ng-class="{active:activeTab=='chats'}" ng-click="switchActiveTab('chats')"><a>Chats</a></li>
+            <li ng-class="{active:activeTab=='page-admin'}" ng-click="switchActiveTab('page-admin')"><a>Personalizar página</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+    <div class=" container-fluid dark-body full-height-container" style="padding-top:50px;background-image: url('../resources/bluegradient.jpg')"  >
       <div class="container">
-        <div class="flex-container-item" ng-controller="clientAdminController as adminCtrl">
+        <!--CHATS SECTION-->
+        <div class="flex-container-item" ng-show="activeTab=='chats'">
           <h1>Chats</h1>
           <ul class="nav nav-tabs" id="chat-nav-bar">
                 <li  ng-class="{active:currentTab==0}" ng-click="adminCtrl.setActiveChat(0);"><a >Opciones de administrador</a ></li>
@@ -30,7 +54,6 @@
             <h1 ng-show="currentTab==0" style="color:white;"> Nuevas pestañas aparecerán cuando haya chats. </h1>
             <form ng-hide="currentTab==0" id="chat-form" class="form-horizontal" role="form" ng-submit="sendMessage();">
               <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
-                  </div>
                   <div class="input-el">
                     <div id="chatbox">
                       <p style="color:gray" ng-hide="currentChats[currentTab-1].messages.length">No hay mensajes en este chat.</p>
@@ -46,10 +69,90 @@
                         </div><!-- /btn-group -->
                       </div>
                     </div>
-
                   </div>
                 </div>
             </form>
+        </div>
+        <!--pAGE PERSONALIZATION SECTION-->
+        <div class="flex-container-item" ng-show="activeTab=='page-admin'">
+          <h1>Personaliza el contenido de tu página.</h1>
+          <form id="header-form" name="headerForm" class="form-horizontal" role="form" ng-submit="changePage();">
+            <h2>Encabezado</h2>
+            <div class="input-group  input-el">
+              <span class="input-group-addon" id="addon-title">Título de la página</span>
+              <input type="text" name="titleInput" class="form-control"  placeholder="Título de la página" ng-model="pageContent.title" aria-describedby="addon-title">
+            </div>
+            <div class="input-group input-el">
+              <span class="input-group-addon" id="addon-subtitle">Subtítulo de la página</span>
+              <input type="text" name="subtitleInput" class="form-control"  placeholder="Subtítulo de la página" ng-model="pageContent.subtitle" aria-describedby="addon-subtitle">
+            </div>
+            <div class="input-group input-el" style="display:flex; justify-content:space-between;">
+              <button type="submit" ng-disabled="headerForm.$pristine" form="header-form" class="btn btn-default">Guardar </button> <span  ng-show="headerForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+            </div>
+          </form>
+          <form id="section-form" name="sectionForm" class="form-horizontal" role="form" ng-submit="changePage();">
+            <h2>Secciones</h2>
+            <p> Personaliza los recuadros donde puedes poner características de tu comercio y los servicios que presta. </p>
+            <div style=" margin-top: 10px;"ng-repeat="section in pageContent.features">
+              <h3 style="display:inline;"> Sección {{$index+1}} </h3><a style="color:#F781F3; text-decoration: underline; cursor:pointer" ng-click="removeSection($index)"> (Eliminar sección) </a>
+              <div class="input-group  input-el">
+                <span class="input-group-addon" id="addon-section-title">Título de sección</span>
+                <input type="text" name="sectionTitleInput" class="form-control"  placeholder="Título de la página" ng-model="section.title" aria-describedby="addon-section-title">
+              </div>
+              <div class="input-group input-el">
+                <span class="input-group-addon" id="addon-section-subtitle">Contenido de la sección</span>
+                <input type="text" name="sectionCubtitleInput" class="form-control"  placeholder="Subtítulo de la página" ng-model="section.content" aria-describedby="addon-section-subtitle">
+              </div>
+            </div>
+            <div class="input-group input-el" style="display:flex;">
+              <button type="submit" form="section" class="btn btn-default" ng-click="addSection()">Agregar sección</button>
+            </div>
+            <div class="input-group input-el" style="display:flex; justify-content:space-between;">
+              <button type="submit" form="section-form" class="btn btn-default">Guardar </button> <span  ng-show="sectionForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+            </div>
+          </form>
+          <form id="components-form" name="componentsForm" class="form-horizontal" role="form" ng-submit="changePage();">
+            <h2>Componentes</h2>
+            <p> Personaliza los componentes especiales de tu página (sección de fotografía, chat, links a redes sociales) </p>
+            <div style=" margin-top: 10px;">
+              <h3> IFrame </h3> <input type="radio" ng-value="true" ng-model="pageContent.iframe_enabled" checked> Activado <br><input type="radio" ng-value="false" ng-model="pageContent.iframe_enabled" > Desactivado<br>
+              <h3> Chat </h3> <input type="radio"  ng-value="true" ng-model="pageContent.chat_enabled" checked> Activado <br><input type="radio" ng-value="false"   ng-model="pageContent.chat_enabled"> Desactivado<br>
+            </div>
+            <div class="input-group input-el" style="display:flex; justify-content:space-between;">
+              <button type="submit" ng-disabled="componentsForm.$pristine" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+            </div>
+          </form>
+          <form id="social-form" name="socialForm" class="form-horizontal" role="form" ng-submit="changePage();">
+            <h2>Redes sociales</h2>
+            <h3> Facebook </h3> <input type="radio" ng-value="true" ng-model="pageContent.social_networks.facebook.enabled"> Activado <br>
+            <div class="input-group  input-el"  ng-show="pageContent.social_networks.facebook.enabled">
+              <span class="input-group-addon" id="addon-title">URL</span>
+              <input  type="text"  class="form-control"ng-model="pageContent.social_networks.facebook.url"  aria-describedby="addon-section-title">
+            </div>
+            <h3> Twitter </h3> <input type="radio" ng-value="true" ng-model="pageContent.social_networks.twitter.enabled"> Activado <br>
+            <div class="input-group  input-el"  ng-show="pageContent.social_networks.twitter.enabled">
+              <span class="input-group-addon" id="addon-title">URL</span>
+              <input  type="text"  class="form-control" ng-model="pageContent.social_networks.twitter.url"  aria-describedby="addon-section-title">
+            </div>
+            <h3> Google+ </h3> <input type="radio" ng-value="true" ng-model="pageContent.social_networks.google_plus.enabled"> Activado <br>
+            <div class="input-group  input-el"  ng-show="pageContent.social_networks.google_plus.enabled">
+              <span class="input-group-addon" id="addon-title">URL</span>
+              <input  type="text"  class="form-control" ng-model="pageContent.social_networks.google_plus.url"  aria-describedby="addon-section-title">
+            </div>
+            <h3> Instagram </h3> <input type="radio" ng-value="true" ng-model="pageContent.social_networks.instagram.enabled"> Activado <br>
+            <div class="input-group  input-el"  ng-show="pageContent.social_networks.instagram.enabled">
+              <span class="input-group-addon" id="addon-title">URL</span>
+              <input  type="text"  class="form-control" ng-model="pageContent.social_networks.instagram.url"  aria-describedby="addon-section-title">
+            </div>
+            <h3> Youtube </h3> <input type="radio" ng-value="true" ng-model="pageContent.social_networks.youtube.enabled"> Activado <br>
+            <div class="input-group  input-el"  ng-show="pageContent.social_networks.youtube.enabled">
+              <span class="input-group-addon" id="addon-title">URL</span>
+              <input  type="text"  class="form-control" ng-model="pageContent.social_networks.youtube.url"  aria-describedby="addon-section-title">
+            </div>
+            <div class="input-group input-el" style="display:flex; justify-content:space-between;">
+              <button type="submit" ng-disabled="socialForm.$pristine" form="social-form" class="btn btn-default">Guardar </button> <span  ng-show="socialForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+            </div>
+          </form>
         </div>
       </div>
     </div>

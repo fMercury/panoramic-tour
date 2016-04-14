@@ -56,7 +56,7 @@ app.get('/testclient2', function(req, res){
 
 //Database calls
 app.get('/getClients', function(req, res){
-	database.getClients(req.query.query, function(docs){
+	database.getClients(JSON.parse(req.query.query), function(docs){
 		res.writeHead("200");
 		res.write(JSON.stringify(docs));
 		res.end();
@@ -65,6 +65,12 @@ app.get('/getClients', function(req, res){
 
 app.post('/addClient', function(req, res){
 	database.addClient(req.body.client, function(){
+			res.end();
+	});
+});
+
+app.post('/updateClientPage', function(req, res){
+	database.updateClientPage(req.body.client,req.body.data, function(){
 			res.end();
 	});
 });

@@ -6,38 +6,28 @@
       </div>
       <div class="col-md-4">
             <div class="flex-container-item">
-              <h1>This is who we are.</h1>
-              <h2> A summary of the services and products we offer for our customers. </h2>
+              <h1>{{pageContent.title}}</h1>
+              <h2> {{pageContent.subtitle}} </h2>
             </div>
-            <div class="flex-container-item featturete">
-              <h3>Sit amet.</h3>
-              <p>Suspendisse malesuada laoreet pellentesque. In pulvinar neque ac ipsum commodo, quis tristique erat blandit. </p>
-            </div>
-            <div class="flex-container-item featturete">
-              <h3>Qui officia.</h3>
-              <p>Praesent tincidunt justo a metus fringilla, nec iaculis lorem dignissim. </p>
-            </div>
-            <div class="flex-container-item featturete">
-              <h3>Occaecat cupidatat.</h3>
-              <p>Mauris blandit porttitor neque in cursus. Quisque in porta nunc, sed elementum justo. </p>
-            </div>
-            <div class="flex-container-item featturete">
-              <h3>Donec feugiat mi odio.</h3>
-              <p>Sit amet pharetra metus facilisis sit amet. </p>
+            <div ng-repeat="feature in pageContent.features" class="flex-container-item featturete">
+              <h3>{{feature.title}}</h3>
+              <p>{{feature.content}}</p>
             </div>
       </div>
       <div class="col-md-1">
       </div>
       <div class="col-md-5">
-        <h1>See for yourself.</h1>
-        <pannellum></pannellum>
-        <div class="flex-container-item" >
-          <h1>Talk to us.</h1>
+        <div class="flex-container-item" ng-show="pageContent.iframe_enabled">
+          <h1>Aquí estamos.</h1>
+          <pannellum></pannellum>
+        </div>
+        <div class="flex-container-item" ng-show="pageContent.chat_enabled">
+          <h1>Contactanos.</h1>
             <form id="chat-form" class="form-horizontal" role="form" ng-submit="sendMessage();">
               <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
                   <div class="row input-el" max-width: 100%;>
                     <div class="col-md-6">
-                      <input type="text" class="featturete  form-control" id="name" placeholder="Name" ng-model="user" required>
+                      <input type="text" class="featturete  form-control" id="name" placeholder="Nombre" ng-model="user" required>
                     </div>
                     <div class="col-md-6">
                       <input type="email" class=" featturete  form-control" id="email" placeholder="Email" ng-model="mail" required>
@@ -78,11 +68,11 @@
     <br>
     <div class="row">
           <div class="navbar-text" style="width:100%;text-align:center;">
-            <a href="#"><i class="fa fa-facebook fa-3x"></i></a>
-            <a href="#"><i class="fa fa-twitter fa-3x"></i></a>
-            <a href="#"><i class="fa fa-google-plus fa-3x"></i></a>
-            <a href="#"><i class="fa fa-instagram fa-3x"></i></a>
-            <a href="#"><i class="fa fa-youtube fa-3x"></i></a>
+            <a ng-href="http://{{pageContent.social_networks.facebook.url}}" ng-show="pageContent.social_networks.facebook.enabled"><i class="fa fa-facebook fa-3x"></i></a>
+            <a ng-href="http://{{pageContent.social_networks.twitter.url}}" ng-show="pageContent.social_networks.twitter.enabled"><i class="fa fa-twitter fa-3x"></i></a>
+            <a ng-href="http://{{pageContent.social_networks.google_plus.url}}" ng-show="pageContent.social_networks.google_plus.enabled"><i class="fa fa-google-plus fa-3x" ></i></a>
+            <a ng-href="http://{{pageContent.social_networks.instagram.url}}" ng-show="pageContent.social_networks.instagram.enabled"><i class="fa fa-instagram fa-3x"></i></a>
+            <a ng-href="http://{{pageContent.social_networks.youtube.url}}"  ng-show="pageContent.social_networks.youtube.enabled"><i class="fa fa-youtube fa-3x"></i></a>
           </div>
     </div>
   </div>

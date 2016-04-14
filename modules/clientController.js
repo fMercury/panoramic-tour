@@ -1,4 +1,4 @@
-angular.module('siteApp').controller("clientController",["$scope","socket","uploader", function($scope,client,uploader){
+angular.module('siteApp').controller("clientController",["$scope","$location","socket","database", function($scope,$location,client,database){
 
   $scope.user = "";
   $scope.mail="";
@@ -6,6 +6,18 @@ angular.module('siteApp').controller("clientController",["$scope","socket","uplo
   $scope.adminID=undefined;
   $scope.chat=[];
   $scope.noAdmins=false;
+
+
+  //Get client info to isntatiate page content
+  database.getClients({web_url : $location.path().split("/").pop()}, function(data){
+    $scope.client = data[0];
+    if (typeof $scope.client.page_content === "undefined" || $.isEmptyObject($scope.client.page_content)){
+      alert ("Error cargando los datos del cliente.");
+    }
+    else{
+      $scope.pageContent = $scope.client.page_content;
+    }
+  });
 
   $scope.sendMessage = function(){
     if (!$scope.noAdmins){
@@ -36,4 +48,6 @@ angular.module('siteApp').controller("clientController",["$scope","socket","uplo
   client.on("set admin id", function(data){
     $scope.adminID = data;
   });
+
+
 }]);

@@ -6,7 +6,21 @@ module.exports = function (mongoose) {
       type : String,
       image : String,
       web_url: String,
-      template_type : String
+      template_type : String,
+      page_content: {
+        title : String,
+        subtitle: String,
+        features: Array,
+        iframe_enabled : Boolean,
+        chat_enabled : Boolean,
+        social_networks : {
+          facebook : {enabled: Boolean, url: String},
+          twitter : {enabled: Boolean, url: String},
+          google_plus : {enabled: Boolean, url: String},
+          instagram : {enabled: Boolean, url: String},
+          youtube:{enabled: Boolean, url: String}
+        }
+      }
     });
 
     module.clientModel = mongoose.model('Client', clientSchema);

@@ -116,7 +116,6 @@ body{
    border-color: $light-blue;
    border-radius: 3px;
    padding: 10px 10px 10px 10px;
-   text-align: justify;
 
    h3{
      margin: 5px 0px 5px 0px;
@@ -180,6 +179,13 @@ button.featturete{
 
 .lightpink{
   color:#FA58AC;
+}
+
+/*Navbar styling*/
+.nav{
+  li{
+    cursor:pointer;
+  }
 }
 
 #chatbox{

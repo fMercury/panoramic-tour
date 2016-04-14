@@ -67,8 +67,16 @@ app.service('database', ["$http", function($http) {
 
   //Get all clients
   this.addClient = function(clientData, callback){
-    console.log(clientData);
     $http.post('addClient', {"client" : clientData}).success(function(data){
+        callback(data);
+    }).error(function(){
+        alert("Error en el envío.");
+    });
+  };
+
+  //Get all clients
+  this.updateClientPage = function(clientName,pageData, callback){
+    $http.post('updateClientPage', {"client" : clientName, "data":pageData}).success(function(data){
         callback(data);
     }).error(function(){
         alert("Error en el envío.");

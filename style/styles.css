@@ -130,6 +130,10 @@ button.featturete {
 .lightpink {
   color: #FA58AC; }
 
+/*Navbar styling*/
+.nav li {
+  cursor: pointer; }
+
 #chatbox {
   border: 2px solid;
   border-color: #97E9FF;

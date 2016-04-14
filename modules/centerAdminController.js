@@ -44,7 +44,47 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
                       "type" : $scope.newClientType,
                       "image" : $scope.myFile.name,               //hardcodero
                       "web_url": $scope.newClientUrl,
-                      "template_type" : $scope.newClientTemplate};   //hardcodero
+                      "template_type" : $scope.newClientTemplate,
+                      "page_content" : {
+                          title : "This is who we are.",
+                          subtitle: "A summary of the services and products we offer for our customers. ",
+                          features : [{
+                            title : "Sit amet.",
+                            content : "Suspendisse malesuada laoreet pellentesque. In pulvinar neque ac ipsum commodo, quis tristique erat blandit."
+                          },{
+                            title : "Qui officia.",
+                            content : "Praesent tincidunt justo a metus fringilla, nec iaculis lorem dignissim."
+                          },{
+                            title : "Occaecat cupidatat.",
+                            content : "Mauris blandit porttitor neque in cursus. Quisque in porta nunc, sed elementum justo."
+                          },{
+                            title : "Donec feugiat mi odio.",
+                            content : "Sit amet pharetra metus facilisis sit amet."
+                          }],
+                          iframe_enabled : true,
+                          chat_enabled : true,
+                          social_networks: {
+                              "facebook": {
+                                  "enabled": false,
+                                  "url": "none"
+                              },
+                              "twitter": {
+                                  "enabled": false,
+                                  "url": "none"
+                              },
+                              "google_plus": {
+                                  "enabled": false,
+                                  "url": "none"
+                              },
+                              "instagram": {
+                                  "enabled": false,
+                                  "url": "none"
+                              },
+                              "youtube": {
+                                  "enabled": false,
+                                  "url": "none"
+                              }
+                          }}};   //hardcodero
     database.addClient(clientData, function(){
         var file = $scope.myFile;
         var uploadUrl = '/uploadImage';

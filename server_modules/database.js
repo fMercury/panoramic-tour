@@ -31,5 +31,18 @@ module.exports = function () {
       });
     };
 
+    module.updateClientPage = function(clientName,data, callback){
+      //docs will be an array
+      var client = schemas.clientModel();
+      schemas.clientModel.update({"name" : clientName}, {"page_content": data}, function (err) {
+        if (err){
+          console.log("Error guardando cliente.");
+        }
+        else{
+          callback();
+        }
+      });
+    };
+
     return module;
 }
