@@ -46,14 +46,6 @@ app.get('/client/:client_id', function(req, res){
 	});
 });
 
-app.get('/testclient', function(req, res){
-	res.sendFile(__dirname + '/views/test-client.html');
-});
-
-app.get('/testclient2', function(req, res){
-	res.sendFile(__dirname + '/views/test-client-enhanced.html');
-});
-
 //Database calls
 app.get('/getClients', function(req, res){
 	database.getClients(JSON.parse(req.query.query), function(docs){

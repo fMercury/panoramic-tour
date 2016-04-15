@@ -6,9 +6,15 @@ angular.module('siteApp').controller("clientController",["$scope","$location","s
   $scope.adminID=undefined;
   $scope.chat=[];
   $scope.noAdmins=false;
+  $scope.loadComplete=false;
+
+  angular.element(document).ready(function () {
+        $scope.loadComplete=true;
+    });
 
 
   //Get client info to isntatiate page content
+
   database.getClients({web_url : $location.path().split("/").pop()}, function(data){
     $scope.client = data[0];
     if (typeof $scope.client.page_content === "undefined" || $.isEmptyObject($scope.client.page_content)){
@@ -18,6 +24,7 @@ angular.module('siteApp').controller("clientController",["$scope","$location","s
       $scope.pageContent = $scope.client.page_content;
     }
   });
+
 
   $scope.sendMessage = function(){
     if (!$scope.noAdmins){

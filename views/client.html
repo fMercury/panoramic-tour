@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html  ng-app="siteApp">
   <head>
     <!--Ensure correct rendering and touch zooming-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Pannellum-->
-    <script src="/node_modules/pannellum/build/pannellum.js"></script>
-    <link rel="stylesheet" type="text/css" href="/node_modules/pannellum/build/pannellum.css">
     <!--Angular-->
     <script src="/node_modules/angular/angular.js"></script>
     <script type="text/javascript" src="/modules/app.js"></script>
@@ -21,7 +18,7 @@
     <!--Socket IO for chat-->
     <script src="../node_modules/socket.io-client/socket.io.js"></script>
   </head>
-  <body ng-app="siteApp">
+  <body>
     <nav-bar></nav-bar>
     <client-template></client-template>
   </body>

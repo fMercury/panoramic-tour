@@ -19,7 +19,15 @@
       <div class="col-md-5">
         <div class="flex-container-item" ng-show="pageContent.iframe_enabled">
           <h1>Aquí estamos.</h1>
-          <pannellum></pannellum>
+          <!--Pannellum component-->
+          <pannellum ng-if="client.template_type=='pannellum'"></pannellum>
+          <!--Panoramic component-->
+          <panoramic ng-if="client.template_type=='panoramic'"></panoramic>
+          <!--Static photo component-->
+          <img ng-if="client.template_type=='static-photo'" src="../resources/mall.jpg" style="width:100%"></img>
+          <!--Carrousel-->
+          <carousel ng-if="client.template_type=='carousel'"></carousel>
+          <!--IFRAME-->
         </div>
         <div class="flex-container-item" ng-show="pageContent.chat_enabled">
           <h1>Contactanos.</h1>
@@ -56,13 +64,6 @@
         </div>
       </div>
       <div class="col-md-1">
-        <!--Esto va para el footer
-        <span class="featturete"><i class="fa fa-facebook"></i></span>
-        <span class="featturete"><i class="fa fa-twitter"></i></span>
-        <span class="featturete"><i class="fa fa-google-plus"></i></span>
-        <span class="featturete"><i class="fa fa-instagram"></i></span>
-        <span class="featturete"><i class="fa fa-youtube"></i></span>
-        -->
       </div>
     </div><!-- /.row -->
     <br>

@@ -140,17 +140,17 @@ app.directive('myEnter', function () {
 app.directive('clientTemplate', function(){
   return {
     restrict: 'E',
-    templateUrl: '../views/client-template.html',
+    templateUrl: '../views/directives/client-template.html',
     controller : "clientController",
     controllerAs: "clientCtrl"
   };
 });
 
-//Pannelum photo viewer directive
+//Navigation bar directive
 app.directive('navBar', function(){
   return {
     restrict: 'E',
-    templateUrl: '../views/nav-bar.html',
+    templateUrl: '../views/directives/nav-bar.html',
   };
 });
 
@@ -158,9 +158,10 @@ app.directive('navBar', function(){
 app.directive('pannellum', function(){
   return {
     restrict: 'E',
-    template: '<div class="flex-container-item"><div id="panorama-container"><div id="panorama-dummy"></div><div id="panorama"></div></div></div>',
+    template: '<link rel="stylesheet" type="text/css" href="../node_modules/pannellum/build/pannellum.css"><div class="flex-container-item"><div id="panorama-container"><div id="panorama-dummy"></div><div id="panorama"></div></div></div>',
     controller : function($scope){
       //Panorama div config
+      $.getScript("../node_modules/pannellum/build/pannellum.js", function(){
       pannellum.viewer('panorama', {
         "default": {
           "firstScene": "circle",
@@ -226,7 +227,31 @@ app.directive('pannellum', function(){
           "autoLoad": true,
           "hotSpotDebug": true
       });
+    });
     },
     controllerAs: "pannellumController"
+  };
+});
+
+//Pannelum photo viewer directive
+app.directive('panoramic', function(){
+  return {
+    restrict: 'E',
+    templateUrl: '../views/directives/panoramic.html',
+    controller : function(){
+      $(document).ready(function(){
+        $.getScript("../modules/scripts/panoramic.js", function(){});
+      })
+
+    },
+    controllerAs:"panoramicController"
+  };
+});
+
+//Carousel directives
+app.directive('carousel', function(){
+  return {
+    restrict: 'E',
+    templateUrl: '../views/directives/carousel.html'
   };
 });
