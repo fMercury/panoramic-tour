@@ -86,11 +86,13 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
                                   "url": "none"
                               }
                           }}};   //hardcodero
-    database.addClient(clientData, function(){
-        var file = $scope.myFile;
-        var uploadUrl = '/uploadImage';
-        var serverpath ='/resources/logos/';
-        fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(){
+
+    var file = $scope.myFile;
+    var uploadUrl = '/uploadImage';
+    var serverpath ='/resources/logos/';
+    fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(filename){
+      clientData.image=filename;
+      database.addClient(clientData, function(){
           alert("Cliente cargado con éxito!");
           location.reload();
         });

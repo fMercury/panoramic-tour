@@ -15,7 +15,6 @@ app.factory('uploader', ['$location', function ($location) {
 
 }]);
 
-
 //Scoket IO
 app.factory('socket', ['$rootScope', function ($rootScope) {
   var socket = io.connect();
@@ -85,16 +84,31 @@ app.service('database', ["$http", function($http) {
 }]);
 
 app.service('fileUpload', ['$http', function ($http) {
-    this.uploadFileToUrl = function(file, uploadUrl, serverpath, callback){
+    this.getID = function(){
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+          }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    }
+
+    this.uploadFileToUrl = function(file, uploadUrl, serverpath,callback){
         var fd = new FormData();
+        //Get file extension
+        var re = /(?:\.([^.]+))?$/;
+        var ext = re.exec(file.name)[1];
+        var newname = this.getID()+"."+ext;
+        //Append data to form
         fd.append('serverpath',serverpath);
+        fd.append('newname',newname);
         fd.append('file', file);
         $http.post(uploadUrl, fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         })
         .success(function(){
-          callback();
+          callback(newname);
         })
         .error(function(){
           console.log("Error cargando imagen al servidor");
@@ -114,7 +128,6 @@ app.directive('fileModel', ['$parse', function ($parse) {
 
             element.bind('change', function(){
                 scope.$apply(function(){
-                    console.log(element[0].files[0]);
                     scope.$parent.myFile = element[0].files[0];
                     modelSetter(scope, element[0].files[0]);
                 });

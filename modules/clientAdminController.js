@@ -7,7 +7,6 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
 
   //view variables
   $scope.activeTab="page-admin";
-
   //Admin connect
   client.emit("admin connect");
 
@@ -15,7 +14,6 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
   database.getClients({name : "Test Client"}, function(data){
     $scope.client = data[0];
     $scope.pageContent = $scope.client.page_content;
-    console.log($scope.pageContent);
   });
 
   $scope.getChatNumber=function(username){
@@ -74,13 +72,11 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
 
   //Funciones de modificación de formulario
   $scope.changeComponent = function(){
-    console.log("scope.file en controller");
-    console.log($scope.myFile);
     var file = $scope.myFile;
     var uploadUrl = '/uploadImage';
     var serverpath ='/resources/client-content/';
-    fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(){
-      $scope.pageContent.iframe_content["image_name"] = $scope.myFile.name;
+    fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(filename){
+      $scope.pageContent.iframe_content["image_name"] = filename;
       database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
         alert("Imagen cargada con éxito!");
       });

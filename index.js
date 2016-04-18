@@ -74,8 +74,9 @@ app.post('/uploadImage', function(req, res){
 		return;
 	}
 	file = req.files.file;
+	var newname = req.body.newname;
 	fs.readFile(file.name, function(err, data) {
-	  var path = __dirname + req.body.serverpath + file.name;
+	  var path = __dirname + req.body.serverpath + newname;
 		fs.writeFile(path, file.data, "base64", function(err) {
 			if (err){console.log("WRITE ERROR!");};
 			res.end();
