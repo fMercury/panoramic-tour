@@ -1,8 +1,9 @@
-angular.module('siteApp').controller("clientAdminController",["$scope","database", "socket", function($scope,database, client){
+angular.module('siteApp').controller("clientAdminController",["$scope","database", "socket",'fileUpload', function($scope,database, client, fileUpload){
 
   $scope.currentChats=[];
   $scope.currentTab=0;
   $scope.currentMessage="";
+  $scope.myFile=null;
 
   //view variables
   $scope.activeTab="page-admin";
@@ -67,8 +68,25 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
   //Funciones de modificación de formulario
   $scope.changePage = function(){
     database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
+      alert("La modificación se completó con éxito.");
+    });
+  }
+
+  //Funciones de modificación de formulario
+  $scope.changeComponent = function(){
+    console.log("scope.file en controller");
+    console.log($scope.myFile);
+    var file = $scope.myFile;
+    var uploadUrl = '/uploadImage';
+    var serverpath ='/resources/client-content/';
+    fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(){
+      $scope.pageContent.iframe_content["image_name"] = $scope.myFile.name;
+      database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
+        alert("Imagen cargada con éxito!");
+      });
 
     });
+
   }
 
   $scope.removeSection =function(index){

@@ -24,7 +24,7 @@
           <!--Panoramic component-->
           <panoramic ng-if="client.template_type=='panoramic'"></panoramic>
           <!--Static photo component-->
-          <img ng-if="client.template_type=='static-photo'" src="../resources/mall.jpg" style="width:100%"></img>
+          <img ng-if="client.template_type=='static-photo'" ng-src="../resources/client-content/{{pageContent.iframe_content.image_name}}" style="width:100%"></img>
           <!--Carrousel-->
           <carousel ng-if="client.template_type=='carousel'"></carousel>
           <!--IFRAME-->

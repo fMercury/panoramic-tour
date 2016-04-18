@@ -13,6 +13,7 @@ module.exports = function (mongoose) {
         features: Array,
         iframe_enabled : Boolean,
         chat_enabled : Boolean,
+        iframe_content : Object,
         social_networks : {
           facebook : {enabled: Boolean, url: String},
           twitter : {enabled: Boolean, url: String},

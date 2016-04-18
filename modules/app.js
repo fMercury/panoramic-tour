@@ -85,8 +85,9 @@ app.service('database', ["$http", function($http) {
 }]);
 
 app.service('fileUpload', ['$http', function ($http) {
-    this.uploadFileToUrl = function(file, uploadUrl, callback){
+    this.uploadFileToUrl = function(file, uploadUrl, serverpath, callback){
         var fd = new FormData();
+        fd.append('serverpath',serverpath);
         fd.append('file', file);
         $http.post(uploadUrl, fd, {
             transformRequest: angular.identity,
@@ -113,6 +114,8 @@ app.directive('fileModel', ['$parse', function ($parse) {
 
             element.bind('change', function(){
                 scope.$apply(function(){
+                    console.log(element[0].files[0]);
+                    scope.$parent.myFile = element[0].files[0];
                     modelSetter(scope, element[0].files[0]);
                 });
             });

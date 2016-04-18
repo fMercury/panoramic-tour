@@ -63,6 +63,7 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
                           }],
                           iframe_enabled : true,
                           chat_enabled : true,
+                          iframe_content : {"type" : $scope.newClientTemplate},
                           social_networks: {
                               "facebook": {
                                   "enabled": false,
@@ -88,7 +89,8 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
     database.addClient(clientData, function(){
         var file = $scope.myFile;
         var uploadUrl = '/uploadImage';
-        fileUpload.uploadFileToUrl(file, uploadUrl, function(){
+        var serverpath ='/resources/logos/';
+        fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(){
           alert("Cliente cargado con éxito!");
           location.reload();
         });
@@ -99,7 +101,8 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
     console.log($scope.myFile);
     var file = $scope.myFile;
     var uploadUrl = '/uploadImage';
-    fileUpload.uploadFileToUrl(file, uploadUrl);
+    var serverpath ='/resources/logos/';
+    fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, path);
   };
 
   $(document).ready(function(){

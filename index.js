@@ -75,7 +75,7 @@ app.post('/uploadImage', function(req, res){
 	}
 	file = req.files.file;
 	fs.readFile(file.name, function(err, data) {
-	  var path = __dirname + '/resources/logos/' + file.name;
+	  var path = __dirname + req.body.serverpath + file.name;
 		fs.writeFile(path, file.data, "base64", function(err) {
 			if (err){console.log("WRITE ERROR!");};
 			res.end();
