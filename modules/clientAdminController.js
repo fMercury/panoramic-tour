@@ -11,7 +11,7 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
   client.emit("admin connect");
 
   //Get client info
-  database.getClients({name : "Test Client"}, function(data){
+  database.getClients({name : "Doghouse Brewing Co."}, function(data){
     $scope.client = data[0];
     $scope.pageContent = $scope.client.page_content;
   });
