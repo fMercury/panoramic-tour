@@ -25,6 +25,10 @@ angular.module('siteApp').controller("clientController",["$scope","$location","s
     }
   });
 
+  $scope.getPanoramic = function(){
+    var url = $scope.pageContent.iframe_content.image_name;
+    return {'background-image': 'url(../resources/client-content/'+url+')'};
+  }
 
   $scope.sendMessage = function(){
     if (!$scope.noAdmins){

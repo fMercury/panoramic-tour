@@ -4,17 +4,22 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
   $scope.currentTab=0;
   $scope.currentMessage="";
   $scope.myFiles=[];
+  $scope.currentClient="Test Client";
 
   //view variables
   $scope.activeTab="page-admin";
   //Admin connect
   client.emit("admin connect");
 
-  //Get client info
-  database.getClients({name : "Doghouse Brewing Co."}, function(data){
-    $scope.client = data[0];
-    $scope.pageContent = $scope.client.page_content;
-  });
+
+  $scope.changeClient = function(){
+    database.getClients({name : $scope.currentClient}, function(data){
+      $scope.client = data[0];
+      $scope.pageContent = $scope.client.page_content;
+    });
+  }
+
+  $scope.changeClient();
 
   $scope.getChatNumber=function(username){
     var i=0;
@@ -65,10 +70,24 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
 
   //Funciones de modificación de formulario
   $scope.changePage = function(){
-    database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
-      alert("La modificación se completó con éxito.");
-    });
-  }
+    if ($scope.client.template_type=='carousel' || typeof($scope.myFiles[0]) == 'undefined'){
+      database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
+        alert("La modificación se completó con éxito.");
+      });
+    }
+    else if ($scope.client.template_type=='static-photo' || $scope.client.template_type=='panoramic'){
+      var file = $scope.myFiles[0];
+      var uploadUrl = '/uploadImage';
+      var serverpath ='/resources/client-content/';
+      fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(filename){
+        $scope.pageContent.iframe_content.image_name = filename;
+        database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
+          alert("Imagen cargada con éxito!");
+        });
+      });
+    }
+  };
+
 
   //Funciones de modificación de formulario
   $scope.changeComponent = function(){
@@ -102,8 +121,7 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
     return typeof($scope.myFiles[index])=='undefined';
   }
 
-  $scope.addImage = function(index){
-
+  $scope.addSlideImage = function(index){
     var file = $scope.myFiles[index];
     var uploadUrl = '/uploadImage';
     var serverpath ='/resources/client-content/';

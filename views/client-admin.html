@@ -47,6 +47,12 @@
     <div class=" container-fluid dark-body full-height-container" style="padding-top:50px;background-image: url('../resources/bluegradient.jpg')"  >
       <div class="container">
         <!--CHATS SECTION-->
+        <p> Personalizar comercio: </p>
+        <select type="text" class="form-control" ng-model="currentClient" ng-change="changeClient()">
+          <option value="Test Client" selected> Cliente de imagen fija </option>
+          <option value="Fork And Knife"> Cliente de panoramica </option>
+          <option value="Doghouse Brewing Co."> Cliente de galería </option>
+        </select>
         <div class="flex-container-item" ng-show="activeTab=='chats'">
           <h1>Chats</h1>
           <ul class="nav nav-tabs" id="chat-nav-bar">
@@ -121,14 +127,18 @@
             <div style=" margin-top: 10px;">
               <!--Conditional section> Static photo-->
               <div ng-if="client.template_type=='static-photo'">
-                <h3> Foto estática </h3> <input type="radio" ng-value="true" ng-model="pageContent.iframe_enabled" checked> Activado <br><input type="radio" ng-value="false" ng-model="pageContent.iframe_enabled" > Desactivado<br><br>
-                <p> Cargar imagen </p>
-                <div class="input-el">
-                  <input type="file"  file-model="myFile"/><br/>
-                </div>
-                <div class="input-group input-el" style="display:flex; justify-content:space-between;">
-                  <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
-                </div>
+                  <h3> Foto estática </h3> <input type="radio" ng-value="true" ng-model="pageContent.iframe_enabled" checked> Activado <br><input type="radio" ng-value="false" ng-model="pageContent.iframe_enabled" > Desactivado<br><br>
+                  <div  ng-show="pageContent.iframe_enabled">
+                    <img ng-src="/resources/client-content/{{pageContent.iframe_content.image_name}}" style="height:300px;"></img>
+                    <p> Cargar imagen </p>
+                    <div class="input-el">
+                      <input type="file"  file-model="myFile"/><br/>
+                    </div>
+
+                  </div>
+                  <div class="input-group input-el" style="display:flex; justify-content:space-between;">
+                    <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+                  </div>
               </div>
               <!--Conditional section> Carousel-->
               <div ng-if="client.template_type=='carousel'" >
@@ -150,7 +160,7 @@
                     <div class="input-group  input-el">
                       <span> Cambiar imagen </span>
                       <input type="file"  file-model="myFiles[$index]"/><br/>
-                      <button type="button" form="section" class="btn btn-default" ng-disabled="isFile($index)" ng-click="addImage($index)">Subir imagen</button>
+                      <button type="button" form="section" class="btn btn-default" ng-disabled="isFile($index)" ng-click="addSlideImage($index)">Subir imagen</button>
                     </div>
                     <div class="row">
                       <div class="col-md-4">
@@ -172,6 +182,23 @@
                   </div>
                 </div>
               </div>
+              <!--Conditional section> panoramic photo-->
+              <div ng-if="client.template_type=='panoramic'">
+                <h3> Foto panorámica </h3> <input type="radio" ng-value="true" ng-model="pageContent.iframe_enabled" checked> Activado <br><input type="radio" ng-value="false" ng-model="pageContent.iframe_enabled" > Desactivado<br><br>
+                <div  ng-show="pageContent.iframe_enabled">
+                  <img ng-src="/resources/client-content/{{pageContent.iframe_content.image_name}}" style="height:300px;"></img>
+                  <h4> Para su correcta visualización, la imagen cargada debe ser una foto 360º, preferentemente de no más de 1024 píxeles de ancho.</h4>
+                  <p> Cargar imagen </p>
+                  <div class="input-el">
+                    <input type="file"  file-model="myFile"/><br/>
+                  </div>
+
+                </div>
+                <div class="input-group input-el" style="display:flex; justify-content:space-between;">
+                  <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+                </div>
+              </div>
+
             </div>
           </form>
           <hr>
