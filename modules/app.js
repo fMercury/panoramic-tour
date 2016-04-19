@@ -128,7 +128,9 @@ app.directive('fileModel', ['$parse', function ($parse) {
 
             element.bind('change', function(){
                 scope.$apply(function(){
-                    scope.$parent.myFile = element[0].files[0];
+                  if (typeof (scope.$parent.myFiles)!='undefined'){
+                      scope.$parent.myFiles[0] = element[0].files[0];
+                  }
                     modelSetter(scope, element[0].files[0]);
                 });
             });

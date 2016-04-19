@@ -116,19 +116,62 @@
             </div>
           </form>
           <hr>
-          <form id="components-form" name="componentsForm" class="form-horizontal" role="form" ng-submit="changeComponent();">
+          <form id="components-form" name="componentsForm" class="form-horizontal" role="form" ng-submit="changePage();">
             <h2>Componentes</h2>
             <div style=" margin-top: 10px;">
+              <!--Conditional section> Static photo-->
               <div ng-if="client.template_type=='static-photo'">
-              <h3> Foto estática </h3> <input type="radio" ng-value="true" ng-model="pageContent.iframe_enabled" checked> Activado <br><input type="radio" ng-value="false" ng-model="pageContent.iframe_enabled" > Desactivado<br><br>
-              <p> Cargar imagen </p>
-              <div class="input-el">
-                <input type="file"  file-model="myFile"/><br/>
+                <h3> Foto estática </h3> <input type="radio" ng-value="true" ng-model="pageContent.iframe_enabled" checked> Activado <br><input type="radio" ng-value="false" ng-model="pageContent.iframe_enabled" > Desactivado<br><br>
+                <p> Cargar imagen </p>
+                <div class="input-el">
+                  <input type="file"  file-model="myFile"/><br/>
+                </div>
+                <div class="input-group input-el" style="display:flex; justify-content:space-between;">
+                  <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+                </div>
               </div>
+              <!--Conditional section> Carousel-->
+              <div ng-if="client.template_type=='carousel'" >
+                <h3> Galería </h3>
+                <div class="row">
+                  <div class="col-md-4">
+                    <input type="radio" ng-value="true" ng-model="pageContent.iframe_enabled" checked> Activado <br><input type="radio" ng-value="false" ng-model="pageContent.iframe_enabled" > Desactivado<br><br>
+                  </div>
+                  <div class="col-md-8">
+                    <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted">
+                  </div>
+                </div>
+                <div ng-show="pageContent.iframe_enabled">
+                  <div ng-repeat="slide in pageContent.iframe_content.slides" >
+                    <hr>
+                    <p> Filmina {{$index+1}} <a style="color:#F781F3; text-decoration: underline; cursor:pointer" ng-click="removeSlide($index)"> (Eliminar diapositiva) </a></p>
+                    <p> Imagen actual </p>
+                    <img ng-src="/resources/client-content/{{slide.image}}" style="height:300px;"></img>
+                    <div class="input-group  input-el">
+                      <span> Cambiar imagen </span>
+                      <input type="file"  file-model="myFiles[$index]"/><br/>
+                      <button type="button" form="section" class="btn btn-default" ng-disabled="isFile($index)" ng-click="addImage($index)">Subir imagen</button>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="input-group  input-el">
+                          <span class="input-group-addon" id="addon-title">Texto</span>
+                          <input type="text" name="slideCaption" class="form-control"  ng-model="slide.caption" aria-describedby="addon-title">
+                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="input-group input-el" style="display:flex;">
+                          <button type="button" class="btn btn-default" ng-click="changeComponent()">Guardar texto </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="input-group input-el" style="display:flex;justify-content:space-between;">
+                    <button type="submit" form="section" class="btn btn-default" ng-click="addSlide()">Agregar diapositiva</button> <a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Preview </a></span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="input-group input-el" style="display:flex; justify-content:space-between;">
-              <button type="submit"  form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
             </div>
           </form>
           <hr>
@@ -175,6 +218,7 @@
                 </div>
               </div>
             </div>
+
             <div class="input-group input-el" style="display:flex; justify-content:center;">
               <button type="submit" ng-disabled="socialForm.$pristine" form="social-form" class="btn btn-default">Guardar </button> <span  ng-show="socialForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
             </div>

@@ -3,7 +3,7 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
   $scope.currentChats=[];
   $scope.currentTab=0;
   $scope.currentMessage="";
-  $scope.myFile=null;
+  $scope.myFiles=[];
 
   //view variables
   $scope.activeTab="page-admin";
@@ -72,15 +72,12 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
 
   //Funciones de modificación de formulario
   $scope.changeComponent = function(){
-    var file = $scope.myFile;
+    var file = $scope.myFiles[0];
     var uploadUrl = '/uploadImage';
     var serverpath ='/resources/client-content/';
-    fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(filename){
-      $scope.pageContent.iframe_content["image_name"] = filename;
-      database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
-        alert("Imagen cargada con éxito!");
-      });
-
+    var acks=0;
+    database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
+      alert("El texto fue modificado con éxito.");
     });
 
   }
@@ -89,8 +86,33 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
     $scope.pageContent.features.splice(index,1);
   }
 
+  $scope.removeSlide =function(index){
+    $scope.pageContent.iframe_content.slides.splice(index,1);
+  }
+
   $scope.addSection =function(){
     $scope.pageContent.features.push({"title" : "Titulo", "content":"Contenido"});
+  }
+
+  $scope.addSlide =function(){
+    $scope.pageContent.iframe_content.slides.push({"image" : "placeholder400x400.png", "caption":"Texto de la filmina"});
+  }
+
+  $scope.isFile = function(index){
+    return typeof($scope.myFiles[index])=='undefined';
+  }
+
+  $scope.addImage = function(index){
+
+    var file = $scope.myFiles[index];
+    var uploadUrl = '/uploadImage';
+    var serverpath ='/resources/client-content/';
+    fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(filename){
+      $scope.pageContent.iframe_content.slides[index].image = filename;
+      database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
+        alert("Imagen cargada con éxito!");
+      });
+    });
   }
 
 }]);

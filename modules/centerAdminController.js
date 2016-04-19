@@ -9,7 +9,7 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
   $scope.newClientUrl="";
   $scope.newClientTemplate="";
   $scope.showNewClientForm=false;
-  $scope.myFile=null;
+  $scope.myFiles=[];
 
   //Get all clients on app start
   database.getClients({},function(clients){
@@ -42,7 +42,7 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
   $scope.addClient= function(){
     var clientData = {"name" : $scope.newClientName,
                       "type" : $scope.newClientType,
-                      "image" : $scope.myFile.name,               //hardcodero
+                      "image" : $scope.myFiles[0].name,               //hardcodero
                       "web_url": $scope.newClientUrl,
                       "template_type" : $scope.newClientTemplate,
                       "page_content" : {
@@ -87,7 +87,7 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
                               }
                           }}};   //hardcodero
 
-    var file = $scope.myFile;
+    var file = $scope.myFiles[0];
     var uploadUrl = '/uploadImage';
     var serverpath ='/resources/logos/';
     fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(filename){
@@ -100,8 +100,7 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
   }
 
   $scope.uploadFile = function(item){
-    console.log($scope.myFile);
-    var file = $scope.myFile;
+    var file = $scope.myFiles[0];
     var uploadUrl = '/uploadImage';
     var serverpath ='/resources/logos/';
     fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, path);
