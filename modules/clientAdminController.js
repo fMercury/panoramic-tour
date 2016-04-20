@@ -90,15 +90,36 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
 
 
   //Funciones de modificación de formulario
-  $scope.changeComponent = function(){
-    var file = $scope.myFiles[0];
+  $scope.changeSlider = function(){
     var uploadUrl = '/uploadImage';
     var serverpath ='/resources/client-content/';
     var acks=0;
-    database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
-      alert("El texto fue modificado con éxito.");
-    });
+    var len = 0;
+    for (i in $scope.myFiles){
+      len++;
+    }
+    if (len==0){
+      database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
+        alert("Se ha realizado la modificación con éxito.");
+      });
+    }
+    else{
+      for (i in $scope.myFiles){
+        var file=$scope.myFiles[i];
+        fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(filename){
+          $scope.pageContent.iframe_content.slides[i].image = filename;
+          acks++;
+          if (acks==len){
+            database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
+              $scope.myFiles=[];
+              alert("Galería modificada con éxito!");
+            });
 
+          }
+
+        });
+      }
+    }
   }
 
   $scope.removeSection =function(index){
@@ -119,18 +140,6 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
 
   $scope.isFile = function(index){
     return typeof($scope.myFiles[index])=='undefined';
-  }
-
-  $scope.addSlideImage = function(index){
-    var file = $scope.myFiles[index];
-    var uploadUrl = '/uploadImage';
-    var serverpath ='/resources/client-content/';
-    fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, function(filename){
-      $scope.pageContent.iframe_content.slides[index].image = filename;
-      database.updateClientPage($scope.client.name, $scope.pageContent,function(data){
-        alert("Imagen cargada con éxito!");
-      });
-    });
   }
 
 }]);

@@ -123,15 +123,17 @@ app.directive('fileModel', ['$parse', function ($parse) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
+
             var model = $parse(attrs.fileModel);
             var modelSetter = model.assign;
-
             element.bind('change', function(){
                 scope.$apply(function(){
                   if (typeof (scope.$parent.myFiles)!='undefined'){
-                      scope.$parent.myFiles[0] = element[0].files[0];
+                      scope.$parent.myFiles[parseInt(attrs.index)] =element[0].files[0];
                   }
+                  else{
                     modelSetter(scope, element[0].files[0]);
+                  }
                 });
             });
         }
