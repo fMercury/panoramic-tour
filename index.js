@@ -3,6 +3,8 @@ var express = require('express');
 var bodyParser = require("body-parser");
 var fs = require("fs");
 var fileUpload = require('express-fileupload');
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 var app  = express();
 var port =process.env.PORT|| 8080;
 
@@ -10,6 +12,16 @@ var port =process.env.PORT|| 8080;
 var server = http.createServer(app);
 var chat = require("./server_modules/chat.js")(server);
 var database = require("./server_modules/database.js")();
+
+//Emial service setup
+var options = {
+    service: 'gmail',
+    auth: {
+        user: 'mdq.hoteles',
+        pass: "mdqadmin"
+    }
+  };
+var transporter = nodemailer.createTransport(smtpTransport(options));
 
 app.use(bodyParser());
 //File uploading capabilities
@@ -33,7 +45,9 @@ app.get('/center', function(req, res){
 	res.sendFile(__dirname + '/views/center.html');
 });
 
-
+app.get('/mdqhotels', function(req, res){
+	res.sendFile(__dirname + '/views/mdqhotels.html');
+});
 
 app.get('/client/:client_id', function(req, res){
 	database.getClients({"web_url" : req.params.client_id}, function(docs){
@@ -82,6 +96,64 @@ app.post('/uploadImage', function(req, res){
 			res.end();
 		});
 	});
+});
+
+//HTTP to send email to client
+app.get('/sendEmail', function(req, res){
+	// create reusable transporter object using the default SMTP transport
+
+	// setup e-mail data with unicode symbols
+	var mailOptions = {
+	    to: req.query.email, // list of receivers
+	    subject: 'SOLICITUD RESERVA HotelMDQ', // Subject line
+	    html: ""
+	};
+	if (req.query.dni==""){
+		req.query.dni= "(No provisto)";
+	}
+	var mailBody= "<h3> Hemos procesado una solicitud con los siguientes datos: </h3>"+"<p><b>Usuario: </b>"+req.query.username+"</p>"+"<p><b>Mail: </b>"+req.query.email+"</p>"+"<p><b>Teléfono: </b>"+req.query.phone+"</p>"+"<p><b>DNI: </b>"+req.query.dni+"</p>"+"<p><b>Fecha de llegada: </b>"+req.query.arrivalDate+"</p>"+"<p><b>Fecha de partida: </b>"+req.query.leavingDate+"</p>"+"<p><b>Cantidad de personas: </b>"+req.query.people+"</p>";
+	mailBody +="<h3> Los siguientes hoteles han sido seleccionados: </h3>";
+	if (Array.isArray(req.query.hotels)){
+		for (i in req.query.hotels){
+			var hotel= JSON.parse(req.query.hotels[i]);
+			mailBody+="<p>"+hotel.name+"</p>";
+		}
+	}
+	else{
+		var hotel= JSON.parse(req.query.hotels);
+		mailBody+="<p>"+hotel.name+"</p>";
+	}
+
+	var specialArray=[];
+	if (Array.isArray(req.query.specialRooms)){
+		for (k in req.query.specialRooms){
+			specialArray.push(JSON.parse(req.query.specialRooms[k]));
+		}
+	}
+	else if (typeof(req.query.specialRooms)!='undefined'){
+		console.log(req.query.specialRooms);
+		specialArray.push(JSON.parse(req.query.specialRooms));
+	}
+	if (specialArray.length>0){
+		mailBody +="<h3> Se han especificado los siguientes datos sobre las habitaciones: </h3>";
+		for (i in specialArray){
+			mailBody+="<p> Habitación "+ i +". Adultos: "+specialArray[i].adults+". Niños: "+specialArray[i].kids+". Edades de los niños:</p>";
+			for (j in specialArray[i].kids_ages){
+				var obj=specialArray[i].kids_ages[j];
+				mailBody+="<p> Niño "+j+": "+obj.age+ " años. </p>";
+			}
+		}
+	}
+	mailOptions.html=mailBody;
+
+	// send mail with defined transport object
+	transporter.sendMail(mailOptions, function(error, response){
+			if(error){
+				res.end('{"success" : "Sent Successfully", "status" : 200}');
+			}else{
+				res.end('{"error" : "Email error", "status" : 200}');
+			}
+		});
 });
 
 //Lets start our server

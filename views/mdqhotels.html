@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Ensure correct rendering and touch zooming-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Angular-->
+    <script src="/node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="/modules/app.js"></script>
+    <script type="text/javascript" src="/modules/mdqHotelsController.js"></script>
+    <!--JQuery-->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <!--Bootstrap-->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"src="../node_modules/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--Custom styling-->
+    <link rel="stylesheet" type="text/css" href="./style/styles.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+  </head>
+  <body ng-app="siteApp" ng-controller="mdqHotelsController as centerCtrl">
+    <!--Top navigation bar-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">HotelMDQ</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+        </div>
+      </div>
+    </nav>
+      <div class="jumbotron container-fluid full-height-container text-center responsive-font" id="welcome-overlay" ng-hide="sliderClosed" ng-class="{fadeout : startFade}">
+        <div class="container">
+          <p class="responsive-font">¡Encontrá tu hospedaje en Mar del Plata!</p>
+          <br>
+          <p class="responsive-font">
+          La plataforma HotelMdq te ayuda a encontrar, gestionar y garantizar tu reserva.
+          Con los servicios y en la zona de la ciudad que elijas.
+          Simplemente completa los siguientes pasos y nosotros nos encargamos del resto.
+          </p>
+          <br><br>
+          <button type="button" class="btn-lg btn-default responsive-font" ng-click="closeSlider();">  ¡Comenzar ahora!  </button>
+        </div>
+      </div>
+    <div class="container-fluid purple-container full-height-container" style="padding-top:60px;" >
+      <div class="container form-container">
+
+        <div class="row text-center" >
+          <!--<h2> Completa el formulario </h2>-->
+          <h2> Seleccionar hospedaje </h2>
+          <form id="client-form" class="form-horizontal" role="form" ng-submit="centerCtrl.sendEmail()">
+          <div class="row" >
+            <div class="col-md-3">
+              <div class='input-append input-group date input-el' id='arrival-day-pick'>
+                    <input data-format="dd/MM/yyyy" type="text" class="featturete form-control" id='arrival-input' style="margin-top: 0px;" required></input>
+                    <span class="add-on input-group-addon">Fecha llegada
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+              <div  class="col-md-3">
+                <div class='input-append input-group date input-el' id='leaving-day-pick'>
+                      <input data-format="dd/MM/yyyy" type="text" class="featturete form-control" id='leaving-input' style="margin-top: 0px;"  required></input>
+                      <span class="add-on input-group-addon">Fecha partida
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+              </div>
+              <div  class="col-md-3">
+                <div class='input-el'>
+                  <select type="text" class="featturete  form-control input-el" id="accomodation" ng-change="eh()" placeholder="Tipo de alojamiento" ng-model="accomodationType" ng-init="accomodationType='hotel'" required>
+                    <option value="hotel" selected>Hotel</option>
+                    <option value="hostel">Hostel</option>
+                    <option value="departamento">Departamento</option>
+                  </select>
+                </div>
+              </div>
+              <div  class="col-md-3">
+                <div  ng-show="accomodationType=='hotel'"">
+                  <select type="text" class="featturete  form-control input-el" id="roomType" placeholder="Tipo de habitación" ng-change="centerCtrl.setSpecialRoomComplete(false)" ng-model="searchRoomType" required>
+                    <option value="none" selected>Habitación</option>
+                    <option value="Individual">Individual</option>
+                    <option value="Doble">Doble</option>
+                    <option value="Familiar">Familiar</option>
+                    <option value="Múltiple">Múltiple</option>
+                  </select>
+                  <div class="form-container roomtype-popup text-left" ng-show="(searchRoomType=='Familiar' || searchRoomType=='Múltiple') && !specialRoomComplete">
+                    <p>Familiar</p>
+                    <hr>
+                    <div ng-repeat="room in specialRooms">
+                      <p> Habitación {{$index+1}} <span><a style="cursor:pointer" ng-show="specialRooms.length>1" ng-click="centerCtrl.removeSpecialRoom($index)"> (Eliminar) </a></span></p>
+                      <span> Cantidad de adultos(+18):  </span>
+                      <select type="number" class="featturete form-control" ng-model="room.adults">
+                        <option value="0"> 0 </option>
+                        <option value="1"> 1 </option>
+                        <option value="2" ng-selected="true"> 2 </option>
+                        <option value="3"> 3 </option>
+                        <option value="4"> 4 </option>
+                      </select>
+                      <br>
+                      <span> Cantidad de niños(-18):  </span>
+                      <select type="number" class="featturete form-control" ng-model="room.kids" ng-change="centerCtrl.changeKidsAmount($index)">
+                        <option value="0" ng-selected="true"> 0 </option>
+                        <option value="1"> 1 </option>
+                        <option value="2"> 2 </option>
+                        <option value="3"> 3 </option>
+                        <option value="4"> 4 </option>
+                      </select>
+                      <br>
+                      <span ng-show="room.kids>0"> Edad de los niños:  </span>
+                      <select type="number" ng-repeat="kid in room.kids_ages" type="number" class="featturete form-control" ng-model=kid.age>
+                        <option value="0"> 0 </option>
+                        <option value="1"> 1 </option>
+                        <option value="2" ng-selected="true"> 2 </option>
+                        <option value="3"> 3 </option>
+                        <option value="4"> 4 </option>
+                        <option value="5"> 5 </option>
+                        <option value="6"> 6 </option>
+                        <option value="7"> 7 </option>
+                        <option value="8"> 8 </option>
+                        <option value="9"> 9 </option>
+                        <option value="10"> 10 </option>
+                        <option value="11"> 11 </option>
+                        <option value="12"> 12 </option>
+                        <option value="13"> 13 </option>
+                        <option value="14"> 14</option>
+                        <option value="15"> 15 </option>
+                        <option value="16"> 16 </option>
+                        <option value="17"> 17 </option>
+                      </select>
+                      <hr>
+                    </div>
+
+                    <button type="button" class="btn btn-default" ng-click="centerCtrl.addSpecialRoom()">+ Agregar habitación</button>
+                    <button type="button" class="btn btn-default"  ng-click="centerCtrl.setSpecialRoomComplete(true)">Confirmar</button>
+                  </div>
+                </div>
+                <div ng-show="accomodationType=='departamento'">
+                      <div class='input-el'>
+                        <select type="text" class="featturete  form-control input-el" id="apartament" placeholder="Tipo de alojamiento" ng-model="apartamentType" required>
+                          <option value="2" selected>2 personas</option>
+                          <option value="4">4 personas</option>
+                          <option value="6">6 personas</option>
+                        </select>
+                      </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <h3> Filtrar por... </h3>
+            <!--Name filter-->
+            <div class="input-el">
+              <input type="text" class="featturete  form-control" id="name" placeholder="Nombre" ng-model="searchName">
+            </div>
+            <!--Stars filter-->
+            <div class="input-el">
+              <p> Estrellas </p>
+              <button type="button" class="btn btn-default btn-xs star-button" ng-click="centerCtrl.selectStars('1');" ng-class="{selected : selectedStars.includes('1') }">
+                0-<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="btn btn-default btn-xs star-button" ng-click="centerCtrl.selectStars('2'); " ng-class="{selected : selectedStars.includes('2')}" >
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="btn btn-default btn-xs star-button" ng-click="centerCtrl.selectStars('3');" ng-class="{selected : selectedStars.includes('3')}">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="btn btn-default btn-xs star-button" ng-click="centerCtrl.selectStars('4');" ng-class="{selected : selectedStars.includes('4')}">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="btn btn-default btn-xs star-button" ng-click="centerCtrl.selectStars('5');" ng-class="{selected : selectedStars.includes('5')}">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+              </button>
+            </div>
+            <!--Zone filter-->
+            <div class="input-el">
+              <p> Zona </p>
+              <select type="text" class="featturete  form-control" id="zone" placeholder="Zona" ng-model="searchZone">
+                <option value="" selected>Cualquier zona</option>
+                <option ng-repeat="zone in zones" ng-value="{{value}}"> {{zone}} </option>
+              </select>
+            </div>
+            <!--Services filter-->
+            <!--Stars filter-->
+            <div class="input-el">
+              <p> Servicios </p>
+              <button type="button" class="btn btn-default btn-sm service-button" ng-click="centerCtrl.addService('Wi-Fi');" ng-class="{selected : selectedServices.includes('Wi-Fi')}">
+                Wi-Fi   <i class="fa fa-wifi"></i>
+              </button>
+              <button type="button" class="btn btn-default btn-sm service-button" ng-click="centerCtrl.addService('Spa');" ng-class="{selected : selectedServices.includes('Spa')}" >
+                Spa   <span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="btn btn-default btn-sm service-button" ng-click="centerCtrl.addService('Playa');" ng-class="{selected : selectedServices.includes('Playa')}">
+                Playa  <i class="fa fa-umbrella"></i>
+              </button>
+              <button type="button" class="btn btn-default btn-sm service-button" ng-click="centerCtrl.addService('Pileta');" ng-class="{selected : selectedServices.includes('Pileta')}">
+                Pileta  <i class="fa fa-life-ring"></i>
+              </button>
+              <button type="button" class="btn btn-default btn-sm service-button" ng-click="centerCtrl.addService('Desayuno');" ng-class="{selected : selectedServices.includes('Desayuno')}">
+                Desayuno  <i class="fa fa-coffee"></i>
+              </button>
+            </div>
+
+          </div>
+          <div class="col-md-10 flex-container">
+            <div ng-repeat='client in filteredClients = (clients | filter:{name : searchName} | filter:{zone : searchZone} | filter:filterRoomType | filter:filterServices | inArray:selectedStars:"stars")' class="client-div" ng-click="centerCtrl.addHotel(client);" ng-class="{selected : selectedHotels.includes(client)}">
+              <img ng-src="../resources/logos/{{client.image}}">
+            </div>
+            <h3 ng-show="!filteredClients.length">No se han encontrado clientes que cumplan con los requisitos.</h3>
+          </div>
+        </div>
+        </div><!-- /.row -->
+        <div class="container form-container">
+          <div class="row">
+            <div class="col-md-5">
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-6 input-el">
+                      <input type="text" class="featturete form-control" id="name" placeholder="Nombre y Apellido" ng-model="username" required>
+                    </div>
+                    <div class="col-md-6 input-el">
+                      <input type="text" class="featturete form-control" id="dni" placeholder="DNI"  ng-model="dni">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 input-el">
+                      <input type="email" class="featturete form-control" id="email" placeholder="Email" required  ng-model="email">
+                    </div>
+                    <div class="col-md-6 input-el">
+                      <input type="phone" class="featturete form-control" id="phone" placeholder="Teléfono"  ng-model="phone" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 input-el text-center">
+                      <label class="radio-inline"><input type="radio" value="standard" name="optradio" checked ng-model="roomQuality" ng-change="eh()">Habitación estándar</label>
+                      <label class="radio-inline"><input type="radio" value="superior " name="optradio" ng-model="roomQuality" ng-change="eh()">Habitación superior</label>
+                    </div>
+                  </div>
+                </div>
+               </form>
+            </div>
+            <div class="col-md-7">
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="col-md-3">
+                      <div class="form-group col-md-12 input-el">
+                          <p> Hoteles seleccionados: </p>
+                      </div>
+                    </div>
+                    <div class="col-md-9">
+                    <div class="flex-container input-el">
+                      <span class="tag label label-info featturette flex-container-item" ng-repeat="hotel in selectedHotels">
+                        <span>{{hotel.name}}</span>
+                        <a ng-click="centerCtrl.removeHotel(hotel);"><i class="remove glyphicon glyphicon-remove-sign glyphicon-white"></i></a>
+                      </span>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group col-md-12 input-el text-center">
+                        <button type="submit" form="client-form" class="btn btn-default" ng-disabled="!selectedHotels.length" id="sendmail-button">Enviar mail</button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </body>
+</html>

@@ -1,3 +1,4 @@
+/* Color variables */
 @font-face {
   font-family: montserrat;
   src: url(../resources/fonts/Montserrat/Montserrat-Regular.ttf); }
@@ -72,19 +73,19 @@ body {
   color: white; }
   .dark-body h2 {
     color: #BDBDBD; }
-  .dark-body .featturete {
-    border: 2px solid;
-    border-color: #97E9FF;
-    border-radius: 3px;
-    padding: 10px 10px 10px 10px;
-    text-align: justify; }
-    .dark-body .featturete h3 {
-      margin: 5px 0px 5px 0px;
-      color: #97E9FF; }
-    .dark-body .featturete p {
-      color: #6FD2ED; }
-    .dark-body .featturete i {
-      color: #97E9FF; }
+
+.featturete {
+  border: 2px solid;
+  border-color: #97E9FF;
+  border-radius: 3px;
+  padding: 10px 10px 10px 10px; }
+  .featturete h3 {
+    margin: 5px 0px 5px 0px;
+    color: #97E9FF; }
+  .featturete p {
+    color: #6FD2ED; }
+  .featturete i {
+    color: #97E9FF; }
 
 .content-only {
   margin: 0px 0px 0px 0px;
@@ -128,6 +129,10 @@ button.featturete {
 .lightpink {
   color: #FA58AC; }
 
+/*Navbar styling*/
+.nav li {
+  cursor: pointer; }
+
 #chatbox {
   border: 2px solid;
   border-color: #97E9FF;
@@ -164,7 +169,6 @@ button.featturete {
   bottom: 0;
   left: 0;
   right: 0;
-  background-image: url("../resources/pano1.jpg");
   background-position: left top;
   cursor: move;
   float: center; }

@@ -46,10 +46,12 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
     $("#message-area").focus();
   };
 
-  this.setActiveChat = function(value){
+  $scope.setActiveChat = function(value){
+    console.log("holr");
     $scope.currentTab=value;
     $('#chatbox').animate({scrollTop: $('#chatbox')[0].scrollHeight});
     $("#message-area").focus();
+    console.log($scope.currentTab);
   }
 
   //Socket IO event handlers

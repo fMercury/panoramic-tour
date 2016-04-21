@@ -1,74 +1,79 @@
-<div class="flex-container container-fluid dark-body full-height-container" style="padding-top:50px;background-image: url('../resources/bluegradient.jpg')";>
+<div class="flex-container container-fluid full-height-container" style="padding-top:50px;";>
   <div class="container">
     <!-- Three columns of text below the carousel -->
     <div class="row">
       <div class="col-md-1">
       </div>
-      <div class="col-md-4">
-            <div class="flex-container-item">
-              <h1>{{pageContent.title}}</h1>
-              <h2> {{pageContent.subtitle}} </h2>
+        <div class="container form-container">
+          <div class="col-md-4">
+                <div class="flex-container-item">
+                  <h1>{{pageContent.title}}</h1>
+                  <h2> {{pageContent.subtitle}} </h2>
+                </div>
+                <div ng-repeat="feature in pageContent.features" class="flex-container-item feature-container">
+                  <h3>{{feature.title}}</h3>
+                  <p>{{feature.content}}</p>
+                </div>
+          </div>
+          <div class="col-md-1">
+          </div>
+
+          <div class="col-md-5">
+            <div class="flex-container-item" ng-show="pageContent.iframe_enabled">
+              <h1>Aquí estamos.</h1>
+              <!--Pannellum component-->
+              <pannellum ng-if="client.template_type=='pannellum'"></pannellum>
+              <!--Panoramic component-->
+              <panoramic ng-if="client.template_type=='panoramic'"></panoramic>
+              <!--Static photo component-->
+              <img ng-if="client.template_type=='static-photo'" ng-src="../resources/client-content/{{pageContent.iframe_content.image_name}}" style="width:100%"></img>
+              <!--Carrousel-->
+              <carousel ng-if="client.template_type=='carousel'"></carousel>
+              <!--IFRAME-->
             </div>
-            <div ng-repeat="feature in pageContent.features" class="flex-container-item featturete">
-              <h3>{{feature.title}}</h3>
-              <p>{{feature.content}}</p>
-            </div>
-      </div>
-      <div class="col-md-1">
-      </div>
-      <div class="col-md-5">
-        <div class="flex-container-item" ng-show="pageContent.iframe_enabled">
-          <h1>Aquí estamos.</h1>
-          <!--Pannellum component-->
-          <pannellum ng-if="client.template_type=='pannellum'"></pannellum>
-          <!--Panoramic component-->
-          <panoramic ng-if="client.template_type=='panoramic'"></panoramic>
-          <!--Static photo component-->
-          <img ng-if="client.template_type=='static-photo'" ng-src="../resources/client-content/{{pageContent.iframe_content.image_name}}" style="width:100%"></img>
-          <!--Carrousel-->
-          <carousel ng-if="client.template_type=='carousel'"></carousel>
-          <!--IFRAME-->
-        </div>
-        <div class="flex-container-item" ng-show="pageContent.chat_enabled">
-          <h1>Contactanos.</h1>
-            <form id="chat-form" class="form-horizontal" role="form" ng-submit="sendMessage();">
-              <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
-                  <div class="row input-el" max-width: 100%;>
-                    <div class="col-md-6">
-                      <input type="text" class="featturete  form-control" id="name" placeholder="Nombre" ng-model="user" required>
-                    </div>
-                    <div class="col-md-6">
-                      <input type="email" class=" featturete  form-control" id="email" placeholder="Email" ng-model="mail" required>
-                    </div>
-                  </div>
-                  <div class="input-el">
-                    <div id="chatbox">
-                      <p style="color:gray" ng-hide="chat.length || noAdmins">Si hay un administrador conectado, puedes ver su respuesta aquí. De lo contrario, un mail con tu mensaje será enviado a nuestro correo y respondido a la brevedad.</p>
-                      <p ng-repeat="chatobj in chat"> <b  ng-class="{'lightyellow' : chatobj.username!='Administrador', 'lightpink' : chatobj.username=='Administrador'}">{{chatobj.username}}: </b> {{chatobj.message}} </p>
-                      <p ng-show="noAdmins"> <b style="color:gray;">No hay administradores conectados en este momento. Se enviará un mail con tu consulta.</b></p>
-                    </div>
-                  </div>
-                  <div class="row input-el text-center">
-                    <div class="col-md-12">
-                      <div class="input-group">
-                        <textarea id="message-area" ng-disabled="noAdmins" class="featturete  form-control" rows="1"  placeholder="Escribe tu consulta aquí." ng-model="currentMessage" required my-enter="sendMessage();"></textarea>
-                        <div class="input-group-btn">
-                          <button type="submit" form="chat-form" class="featturete btn btn-default">Enviar </button>
-                        </div><!-- /btn-group -->
+            <div class="flex-container-item" ng-show="pageContent.chat_enabled">
+              <h1>Contactanos.</h1>
+                <form id="chat-form" class="form-horizontal" role="form" ng-submit="sendMessage();">
+                  <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
+                      <div class="row input-el" max-width: 100%;>
+                        <div class="col-md-6">
+                          <input type="text" class="featturete  form-control" id="name" placeholder="Nombre" ng-model="user" required>
+                        </div>
+                        <div class="col-md-6">
+                          <input type="email" class=" featturete  form-control" id="email" placeholder="Email" ng-model="mail" required>
+                        </div>
+                      </div>
+                      <div class="row input-el" style="margin-top :20px;">
+                        <div class="col-md-12">
+                          <div id="chatbox">
+                            <p style="color:gray" ng-hide="chat.length || noAdmins">Si hay un administrador conectado, puedes ver su respuesta aquí. De lo contrario, un mail con tu mensaje será enviado a nuestro correo y respondido a la brevedad.</p>
+                            <p ng-repeat="chatobj in chat"> <b  ng-class="{'lightyellow' : chatobj.username!='Administrador', 'lightpink' : chatobj.username=='Administrador'}">{{chatobj.username}}: </b> {{chatobj.message}} </p>
+                            <p ng-show="noAdmins"> <b style="color:gray;">No hay administradores conectados en este momento. Se enviará un mail con tu consulta.</b></p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row input-el text-center"  style="margin-top :20px;">
+                        <div class="col-md-12">
+                          <div class="input-group">
+                            <textarea id="message-area" ng-disabled="noAdmins" class="featturete  form-control" rows="1" style="margin-top:3px;padding-top:6px;" placeholder="Escribe tu consulta aquí." ng-model="currentMessage" required my-enter="sendMessage();"></textarea>
+                            <div class="input-group-btn">
+                              <button type="submit" form="chat-form" class="featturete btn btn-default">Enviar </button>
+                            </div><!-- /btn-group -->
+                          </div>
+                        </div>
+
                       </div>
                     </div>
-
-                  </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+          </div>
       </div>
       <div class="col-md-1">
       </div>
     </div><!-- /.row -->
     <br>
-    <div class="row">
-          <div class="navbar-text" style="width:100%;text-align:center;">
+    <div class="row" >
+          <div class="navbar-text  form-container" style="width:100%;text-align:center;" ng-show="pageContent.social_networks.facebook.enabled ||pageContent.social_networks.twitter.enabled || pageContent.social_networks.google_plus.enabled||pageContent.social_networks.instagram.enabled ||pageContent.social_networks.youtube.enabled">
             <a ng-href="http://{{pageContent.social_networks.facebook.url}}" ng-show="pageContent.social_networks.facebook.enabled"><i class="fa fa-facebook fa-3x"></i></a>
             <a ng-href="http://{{pageContent.social_networks.twitter.url}}" ng-show="pageContent.social_networks.twitter.enabled"><i class="fa fa-twitter fa-3x"></i></a>
             <a ng-href="http://{{pageContent.social_networks.google_plus.url}}" ng-show="pageContent.social_networks.google_plus.enabled"><i class="fa fa-google-plus fa-3x" ></i></a>

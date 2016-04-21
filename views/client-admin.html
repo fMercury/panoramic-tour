@@ -44,34 +44,31 @@
     </nav>
   </div>
 
-    <div class=" container-fluid dark-body full-height-container" style="padding-top:50px;background-image: url('../resources/bluegradient.jpg')"  >
-      <div class="container">
+    <div class=" container-fluid full-height-container" style="padding-top:50px;"  >
+      <div class="container form-container">
         <!--CHATS SECTION-->
-        <p> Personalizar comercio: </p>
-        <select type="text" class="form-control" ng-model="currentClient" ng-change="changeClient()">
-          <option value="Test Client" selected> Cliente de imagen fija </option>
-          <option value="Fork And Knife"> Cliente de panoramica </option>
-          <option value="Doghouse Brewing Co."> Cliente de galería </option>
-        </select>
+
         <div class="flex-container-item" ng-show="activeTab=='chats'">
           <h1>Chats</h1>
           <ul class="nav nav-tabs" id="chat-nav-bar">
-                <li  ng-class="{active:currentTab==0}" ng-click="adminCtrl.setActiveChat(0);"><a >Opciones de administrador</a ></li>
-                <li ng-repeat="chat in currentChats" ng-value="$index"  ng-click="adminCtrl.setActiveChat($index+1);" ng-class="{active:currentTab==$index+1}"><a>{{chat.client}}</a></li>
+                <li  ng-class="{active:currentTab==0}" ng-click="setActiveChat(0);"><a >Opciones de administrador</a ></li>
+                <li ng-repeat="chat in currentChats" ng-value="$index"  ng-click="setActiveChat($index+1);" ng-class="{active:currentTab==$index+1}"><a>{{chat.client}}</a></li>
           </ul>
-            <h1 ng-show="currentTab==0" style="color:white;"> Nuevas pestañas aparecerán cuando haya chats. </h1>
+            <h1 ng-show="currentTab==0"> Nuevas pestañas aparecerán cuando haya chats. </h1>
             <form ng-hide="currentTab==0" id="chat-form" class="form-horizontal" role="form" ng-submit="sendMessage();">
               <div class="form-group" style="max-width: 100%; margin:0px 0px 0px 0px;">
-                  <div class="input-el">
-                    <div id="chatbox">
-                      <p style="color:gray" ng-hide="currentChats[currentTab-1].messages.length">No hay mensajes en este chat.</p>
-                      <p ng-repeat="chatobj in currentChats[currentTab-1].messages"> <b  ng-class="{'lightyellow' : chatobj.username!='Administrador', 'lightpink' : chatobj.username=='Administrador'}">{{chatobj.username}}: </b> {{chatobj.message}} </p>
+                  <div class="row input-el">
+                    <div class="col-md-12">
+                      <div id="chatbox">
+                        <p style="color:gray" ng-hide="currentChats[currentTab-1].messages.length">No hay mensajes en este chat.</p>
+                        <p ng-repeat="chatobj in currentChats[currentTab-1].messages"> <b  ng-class="{'lightyellow' : chatobj.username!='Administrador', 'lightpink' : chatobj.username=='Administrador'}">{{chatobj.username}}: </b> {{chatobj.message}} </p>
+                      </div>
                     </div>
                   </div>
                   <div class="row input-el text-center">
                     <div class="col-md-12">
-                      <div class="input-group">
-                        <textarea id="message-area" class="featturete  form-control" rows="1"  placeholder="Tu mensaje aquí" ng-model="currentMessage" required my-enter="sendMessage();"></textarea>
+                      <div class="input-group" style="margin-top:20px;">
+                        <textarea id="message-area" class="featturete  form-control" rows="1" style="margin-top:3px;padding-top:6px; "  placeholder="Tu mensaje aquí" ng-model="currentMessage" required my-enter="sendMessage();"></textarea>
                         <div class="input-group-btn">
                           <button type="submit" form="chat-form" class="featturete btn btn-default">Enviar </button>
                         </div><!-- /btn-group -->
@@ -84,6 +81,12 @@
         <!--pAGE PERSONALIZATION SECTION-->
         <div class="flex-container-item" ng-show="activeTab=='page-admin'">
           <h1>Personaliza el contenido de tu página.</h1>
+          <p> Personalizar comercio: </p>
+          <select type="text" class="form-control" ng-model="currentClient" ng-change="changeClient()">
+            <option value="Test Client" selected> Cliente de imagen fija </option>
+            <option value="Fork And Knife"> Cliente de panoramica </option>
+            <option value="Doghouse Brewing Co."> Cliente de galería </option>
+          </select>
           <hr>
           <form id="header-form" name="headerForm" class="form-horizontal" role="form" ng-submit="changePage();">
             <h2>Encabezado</h2>
@@ -96,7 +99,7 @@
               <input type="text" name="subtitleInput" class="form-control"  placeholder="Subtítulo de la página" ng-model="pageContent.subtitle" aria-describedby="addon-subtitle">
             </div>
             <div class="input-group input-el" style="display:flex; justify-content:space-between;">
-              <button type="submit" ng-disabled="headerForm.$pristine" form="header-form" class="btn btn-default">Guardar </button> <span  ng-show="headerForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+              <button type="submit" ng-disabled="headerForm.$pristine" form="header-form" class="btn btn-default">Guardar </button> <span  ng-show="headerForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#FF0080; text-decoration: underline;"> Ver cambios </a></span>
             </div>
           </form>
           <hr>
@@ -104,7 +107,7 @@
             <h2>Secciones</h2>
             <p> Personaliza los recuadros donde puedes poner características de tu comercio y los servicios que presta. </p>
             <div style=" margin-top: 10px;"ng-repeat="section in pageContent.features">
-              <h3 style="display:inline;"> Sección {{$index+1}} </h3><a style="color:#F781F3; text-decoration: underline; cursor:pointer" ng-click="removeSection($index)"> (Eliminar sección) </a>
+              <h3 style="display:inline;"> Sección {{$index+1}} </h3><a style="color:#FF0080; text-decoration: underline; cursor:pointer" ng-click="removeSection($index)"> (Eliminar sección) </a>
               <div class="input-group  input-el">
                 <span class="input-group-addon" id="addon-section-title">Título de sección</span>
                 <input type="text" name="sectionTitleInput" class="form-control"  placeholder="Título de la página" ng-model="section.title" aria-describedby="addon-section-title">
@@ -118,7 +121,7 @@
               <button type="submit" form="section" class="btn btn-default" ng-click="addSection()">Agregar sección</button>
             </div>
             <div class="input-group input-el" style="display:flex; justify-content:space-between;">
-              <button type="submit" form="section-form" class="btn btn-default">Guardar </button> <span  ng-show="sectionForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+              <button type="submit" form="section-form" class="btn btn-default">Guardar </button> <span  ng-show="sectionForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#FF0080; text-decoration: underline;"> Ver cambios </a></span>
             </div>
           </form>
           <hr>
@@ -137,7 +140,7 @@
 
                   </div>
                   <div class="input-group input-el" style="display:flex; justify-content:space-between;">
-                    <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+                    <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#FF0080; text-decoration: underline;"> Ver cambios </a></span>
                   </div>
               </div>
               <!--Conditional section> Carousel-->
@@ -154,7 +157,7 @@
                 <div ng-show="pageContent.iframe_enabled">
                   <div ng-repeat="slide in pageContent.iframe_content.slides" >
                     <hr>
-                    <p> Filmina {{$index+1}} <a style="color:#F781F3; text-decoration: underline; cursor:pointer" ng-click="removeSlide($index)"> (Eliminar diapositiva) </a></p>
+                    <p> Filmina {{$index+1}} <a style="color:#FF0080; text-decoration: underline; cursor:pointer" ng-click="removeSlide($index)"> (Eliminar diapositiva) </a></p>
                     <p> Imagen actual </p>
                     <img ng-src="/resources/client-content/{{slide.image}}" style="height:300px;"></img>
                     <div class="input-group  input-el">
@@ -168,7 +171,7 @@
                   </div>
                   <hr>
                   <div class="input-group input-el" style="display:flex;justify-content:space-between;">
-                    <button type="button" form="section" class="btn btn-default" ng-click="addSlide()">Agregar diapositiva</button> <a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Preview </a></span>
+                    <button type="button" form="section" class="btn btn-default" ng-click="addSlide()">Agregar diapositiva</button> <a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#FF0080; text-decoration: underline;"> Preview </a></span>
                   </div>
                   <div class="input-group input-el" style="display:flex; justify-content:space-between;">
                     <button type="button" class="btn btn-default" ng-click="changeSlider()">Guardar </button>
@@ -188,7 +191,7 @@
 
                 </div>
                 <div class="input-group input-el" style="display:flex; justify-content:space-between;">
-                  <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+                  <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#FF0080; text-decoration: underline;"> Ver cambios </a></span>
                 </div>
               </div>
 
@@ -240,7 +243,7 @@
             </div>
 
             <div class="input-group input-el" style="display:flex; justify-content:center;">
-              <button type="submit" ng-disabled="socialForm.$pristine" form="social-form" class="btn btn-default">Guardar </button> <span  ng-show="socialForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#F781F3; text-decoration: underline;"> Ver cambios </a></span>
+              <button type="submit" ng-disabled="socialForm.$pristine" form="social-form" class="btn btn-default">Guardar </button> <span  ng-show="socialForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#FF0080; text-decoration: underline;"> Ver cambios </a></span>
             </div>
           </form>
         </div>
