@@ -3,7 +3,7 @@ module.exports = function (mongoose) {
 
     var clientSchema = mongoose.Schema({
       name : String,
-      type : String,
+      center : String,
       image : String,
       web_url: String,
       template_type : String,
@@ -21,7 +21,8 @@ module.exports = function (mongoose) {
           instagram : {enabled: Boolean, url: String},
           youtube:{enabled: Boolean, url: String}
         }
-      }
+      },
+      client_data : Object
     });
 
     module.clientModel = mongoose.model('Client', clientSchema);

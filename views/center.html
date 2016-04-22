@@ -68,7 +68,7 @@
             </div>
           </div>
           <div class="col-md-10 flex-container">
-            <div ng-repeat="client in clients | filter:{name : searchText} | filter:{type : searchType}" class="client-div">
+            <div ng-repeat="client in clients | filter:{name : searchText} | filter:filterCategory" class="client-div">
               <img ng-src="../resources/logos/{{client.image}}">
             </div>
           </div>

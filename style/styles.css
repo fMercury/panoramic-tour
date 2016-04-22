@@ -31,17 +31,23 @@ body {
     border: 2px solid;
     border-color: #1C1C1C;
     cursor: pointer; }
-    .purple-container .client-div:hover {
-      -moz-transform: translate(-2px, -2px);
-      -ms-transform: translate(-2px, -2px);
-      -o-transform: translate(-2px, -2px);
-      -webkit-transform: translate(-2px, -2px);
-      transform: translate(-2px, -2px); }
     .purple-container .client-div img {
       max-width: 100%;
       max-height: 100%;
       margin: auto;
       display: block; }
+
+.fav-heart {
+  position: absolute;
+  margin-left: 5px;
+  margin-top: 5px;
+  color: #FF0080; }
+  .fav-heart:hover {
+    -moz-transform: translate(-2px, -2px);
+    -ms-transform: translate(-2px, -2px);
+    -o-transform: translate(-2px, -2px);
+    -webkit-transform: translate(-2px, -2px);
+    transform: translate(-2px, -2px); }
 
 .client-div.selected {
   border-color: #FF9EDF; }

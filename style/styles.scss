@@ -48,13 +48,7 @@ body{
     border-color:#1C1C1C;
     cursor:pointer;
 
-    &:hover {
-        -moz-transform: translate(-2px, -2px);
-        -ms-transform: translate(-2px, -2px);
-        -o-transform: translate(-2px, -2px);
-        -webkit-transform: translate(-2px, -2px);
-        transform: translate(-2px, -2px)
-    }
+
 
     img{
       max-width:100%;
@@ -66,6 +60,19 @@ body{
 
 }
 
+.fav-heart{
+  position: absolute; margin-left:5px; margin-top:5px; color:#FF0080;
+
+  &:hover {
+      -moz-transform: translate(-2px, -2px);
+      -ms-transform: translate(-2px, -2px);
+      -o-transform: translate(-2px, -2px);
+      -webkit-transform: translate(-2px, -2px);
+      transform: translate(-2px, -2px)
+
+
+  }
+}
 .client-div.selected{
   border-color: #FF9EDF;
 }

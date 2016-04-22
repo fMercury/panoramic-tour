@@ -82,7 +82,7 @@
                 </div>
               </div>
               <div  class="col-md-3">
-                <div  ng-show="accomodationType=='hotel'"">
+                <div  ng-show="accomodationType=='hotel'">
                   <select type="text" class="featturete  form-control input-el" id="roomType" placeholder="Tipo de habitación" ng-change="centerCtrl.setSpecialRoomComplete(false)" ng-model="searchRoomType" required>
                     <option value="none" selected>Habitación</option>
                     <option value="Individual">Individual</option>
@@ -211,8 +211,10 @@
 
           </div>
           <div class="col-md-10 flex-container">
-            <div ng-repeat='client in filteredClients = (clients | filter:{name : searchName} | filter:{zone : searchZone} | filter:filterRoomType | filter:filterServices | inArray:selectedStars:"stars")' class="client-div" ng-click="centerCtrl.addHotel(client);" ng-class="{selected : selectedHotels.includes(client)}">
-              <img ng-src="../resources/logos/{{client.image}}">
+            <div ng-repeat='client in filteredClients = (clients | filter:{name : searchName} | filter:filterZone  | filter:filterRoomType | filter:filterServices | filter:filterStars)' class="client-div">
+              <span class="fav-heart" ng-click="centerCtrl.addHotel(client);">  <i class="fa fa-heart-o fa-2x" ng-hide="selectedHotels.includes(client)"></i> <i class="fa fa-heart fa-2x" ng-show="selectedHotels.includes(client)"></i> </span>
+                <!--<a href="/client/{{client.web_url}}">-->
+                <a a target="_blank" href="/client/{{client.web_url}}"><img  ng-src="../resources/logos/{{client.image}}">
             </div>
             <h3 ng-show="!filteredClients.length">No se han encontrado clientes que cumplan con los requisitos.</h3>
           </div>

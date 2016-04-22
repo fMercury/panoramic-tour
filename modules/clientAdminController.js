@@ -47,7 +47,6 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
   };
 
   $scope.setActiveChat = function(value){
-    console.log("holr");
     $scope.currentTab=value;
     $('#chatbox').animate({scrollTop: $('#chatbox')[0].scrollHeight});
     $("#message-area").focus();

@@ -74,8 +74,8 @@
             </form>
             </div>
           <div class="col-md-10 flex-container">
-            <div ng-repeat="client in clients | filter:{name : searchText} | filter:{type : searchType}" class="client-div">
-              <a href="/client/{{client.web_url}}"><img ng-src="../resources/logos/{{client.image}}"></a>
+            <div ng-repeat="client in clients | filter:{name : searchText} | filter:filterCategory" class="client-div">
+              <a a target="_blank" href="/client/{{client.web_url}}"><img ng-src="../resources/logos/{{client.image}}"></a>
             </div>
           </div>
         </div>

@@ -11,21 +11,23 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
   $scope.showNewClientForm=false;
   $scope.myFiles=[];
 
-  //Get all clients on app start
-  database.getClients({},function(clients){
-    $scope.clients = clients;
-    $scope.availableTypes=$scope.getTypes();
-  });
-
   $scope.getTypes = function(){
     var types=[];
     for (i in $scope.clients){
-      if (!types.includes($scope.clients[i].type)){
-        types.push($scope.clients[i].type);
+      if (!types.includes($scope.clients[i].client_data.category)){
+        types.push($scope.clients[i].client_data.category);
       }
     }
     return types;
   };
+
+
+  //Get all clients on app start
+  database.getClients({"center" : "Test Center"},function(clients){
+    $scope.clients = clients;
+    $scope.availableTypes=$scope.getTypes();
+  });
+
 
   $scope.searchText="";
   $scope.searchType="";
@@ -41,7 +43,7 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
 
   $scope.addClient= function(){
     var clientData = {"name" : $scope.newClientName,
-                      "type" : $scope.newClientType,
+                      "center" : "Test Center",
                       "image" : $scope.myFiles[0].name,               //hardcodero
                       "web_url": $scope.newClientUrl,
                       "template_type" : $scope.newClientTemplate,
@@ -85,7 +87,9 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
                                   "enabled": false,
                                   "url": "none"
                               }
-                          }}};   //hardcodero
+                          }},
+                          "client_data":{"category": $scope.newClientType}
+                        };   //hardcodero
 
     var file = $scope.myFiles[0];
     var uploadUrl = '/uploadImage';
@@ -105,6 +109,13 @@ angular.module('siteApp').controller("centerAdminController",["$scope","database
     var serverpath ='/resources/logos/';
     fileUpload.uploadFileToUrl(file, uploadUrl,serverpath, path);
   };
+
+  $scope.filterCategory = function(hotel){
+    if (hotel.client_data.category == $scope.searchType || $scope.searchType==""){
+      return true;
+    }
+    else return false;
+  }
 
   $(document).ready(function(){
     var logoHeight = $('.client-div img').height();

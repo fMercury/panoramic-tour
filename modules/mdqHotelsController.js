@@ -1,4 +1,4 @@
-app.controller("mdqHotelsController",["$scope","$http","$timeout", function($scope, $http, $timeout){
+app.controller("mdqHotelsController",["$scope","$http","$timeout","database", function($scope, $http, $timeout, database){
 
   var self=this;
 
@@ -30,148 +30,10 @@ app.controller("mdqHotelsController",["$scope","$http","$timeout", function($sco
   $scope.phone="";
   $scope.dni="";
 
-  $scope.eh = function(){
-    console.log($scope.roomQuality);
-  }
-
-  $scope.clients = [{
-    "name" : "Cossack Spring Pea",
-    "zone" : "Aquarium",
-    "stars" : "2",
-    "roomType": ["Individual","Doble","Familiar","Mútiple"],
-    "services" : ["Wi-Fi","Desayuno"],
-    "image" : "1.jpg"
-  },{
-      "name" : "Doghouse Brewing Co.",
-      "zone" : "Centro",
-      "stars" : "1",
-      "roomType": ["Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno"],
-      "image" : "2.jpg"
-    },
-    {
-      "name" : "Fork And Knife",
-      "zone" : "Laguna de los Padres",
-      "stars" : "4",
-      "roomType": ["Múltiple"],
-      "services" : [],
-      "image" : "3.jpg"
-    },
-    {
-      "name" : "KW",
-      "zone" : "Casino Central",
-      "stars" : "2",
-      "roomType": ["Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno","Spa"],
-      "image" : "4.jpg"
-    },
-    {
-      "name" : "Poids Plume",
-      "zone" : "Centro",
-      "stars" : "2",
-      "roomType": ["Doble","Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno"],
-      "image" : "5.jpg"
-    },
-    {
-      "name" : "Westlands",
-      "zone" : "Centro",
-      "stars" : "3",
-      "roomType": ["Individual","Doble","Familiar","Mútiple"],
-      "services" : ["Wi-Fi","Desayuno"],
-      "image" : "6.jpg"
-    },
-    {
-      "name" : "Studio 45",
-      "zone" : "Stella Maris",
-      "stars" : "5",
-      "roomType": ["Individual","Doble","Familiar","Mútiple"],
-      "services" : ["Wi-Fi","Desayuno","Pileta"],
-      "image" : "14.jpg"
-    },
-    {
-      "name" : "Lingua Viva",
-      "zone" : "Museo del Mar",
-      "stars" : "2",
-      "roomType": ["Doble","Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno","Playa"],
-      "image" : "7.jpg"
-    },
-    {
-      "name" : "Beach Park",
-      "zone" : "Laguna de los Padres",
-      "stars" : "2",
-      "roomType": ["Múltiple"],
-      "services" : ["Wi-Fi","Desayuno","Playa"],
-      "image" : "8.jpg"
-    },
-    {
-      "name" : "Corsa Capital",
-      "zone" : "Playa Varese",
-      "stars" : "3",
-      "roomType": ["Doble","Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno","Pileta"],
-      "image" : "9.jpg"
-    },
-    {
-      "name" : "Taurus",
-      "zone" : "Plaza Mitre",
-      "stars" : "1",
-      "roomType": ["Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno"],
-      "image" : "15.jpg"
-    },
-    {
-      "name" : "Tel",
-      "zone" : "Plaza Mitre",
-      "stars" : "3",
-      "roomType": ["Individual","Doble","Familiar","Mútiple"],
-      "services" : ["Wi-Fi","Pileta"],
-      "image" : "10.jpg"
-    },
-    {
-      "name" : "M",
-      "zone" : "Playa Varese",
-      "stars" : "4",
-      "roomType": ["Doble","Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno","Spa","Pileta"],
-      "image" : "11.jpg"
-    },
-    {
-      "name" : "Hula Hoop",
-      "zone" : "Torreón del Monje",
-      "stars" : "5",
-      "roomType": ["Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno","Spa"],
-      "image" : "12.jpg"
-    },
-    {
-      "name" : "Human",
-      "zone" : "Torreón del Monje",
-      "stars" : "3",
-      "roomType": ["Doble","Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno"],
-      "image" : "16.jpg"
-    },
-    {
-      "name" : "Act Research",
-      "zone" : "Centro Cultural Villa Victoria",
-      "stars" : "4",
-      "roomType": ["Doble","Familiar", "Múltiple"],
-      "services" : ["Wi-Fi","Desayuno"],
-      "image" : "13.jpg"
-    },
-  ];
-
-  this.getTypes = function(){
-    var types=[];
-    for (i in $scope.clients){
-      if (!types.includes($scope.clients[i].type)){
-        types.push($scope.clients[i].type);
-      }
-    }
-    return types;
-  };
+  //Get all clients on app start
+  database.getClients({"center" : "MDQHotels"},function(clients){
+    $scope.clients = clients;
+  });
 
   this.selectStars = function(value){
     if ($scope.selectedStars.includes(value)){
@@ -213,7 +75,6 @@ app.controller("mdqHotelsController",["$scope","$http","$timeout", function($sco
   };
 
   this.changeKidsAmount = function(index){
-    console.log(index);
     var new_ages=[];
     var i=0;
     while (i<$scope.specialRooms[index].kids){
@@ -284,7 +145,6 @@ app.controller("mdqHotelsController",["$scope","$http","$timeout", function($sco
 
 
     $(document).ready(function(){
-      $scope.availableTypes=self.getTypes();
       //Datepicker code
       $(function () {
             $('#arrival-day-pick').datetimepicker();
@@ -300,8 +160,22 @@ app.controller("mdqHotelsController",["$scope","$http","$timeout", function($sco
       });
     });
 
+    $scope.filterZone = function(hotel){
+      if (hotel.client_data.zone == $scope.searchZone || $scope.searchZone==""){
+        return true;
+      }
+      else return false;
+    }
+
+    $scope.filterStars = function(hotel){
+      if ($scope.selectedStars.length==0 || $scope.selectedStars.includes(hotel.client_data.stars)){
+        return true;
+      }
+      else return false;
+    }
+
     $scope.filterRoomType = function(hotel){
-      if (hotel.roomType.includes($scope.searchRoomType) || $scope.searchRoomType=="none"){
+      if (hotel.client_data.roomType.includes($scope.searchRoomType) || $scope.searchRoomType=="none"){
         return true;
       }
       else return false;
@@ -311,11 +185,11 @@ app.controller("mdqHotelsController",["$scope","$http","$timeout", function($sco
       var allServices=true;
       var i=0;
       while (allServices && i<$scope.selectedServices.length){
-        if (!hotel.services.length){
+        if (!hotel.client_data.services.length){
           allServices=false;
         }
         else{
-          if (!hotel.services.includes($scope.selectedServices[i])){
+          if (!hotel.client_data.services.includes($scope.selectedServices[i])){
             allServices=false;
           }
         }
