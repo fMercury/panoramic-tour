@@ -20,7 +20,7 @@
     <!--File upload-->
     <script src="../node_modules/angular-file-upload/dist/angular-file-upload.min.js"></script>
   </head>
-  <body ng-app="siteApp" ng-controller="clientAdminController">
+  <body ng-app="siteApp" ng-controller="clientAdminController as clAdCtrl">
   <div id="navbar" class="navbar-collapse">
     <!--Top navigation bar-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -86,6 +86,7 @@
             <option value="Test Client" selected> Cliente de imagen fija </option>
             <option value="Fork And Knife"> Cliente de panoramica </option>
             <option value="Doghouse Brewing Co."> Cliente de galería </option>
+            <option value="Poids Plume"> Cliente de tour </option>
           </select>
           <hr>
           <form id="header-form" name="headerForm" class="form-horizontal" role="form" ng-submit="changePage();">
@@ -194,7 +195,62 @@
                   <button type="submit" form="components-form" class="btn btn-default">Guardar </button> <span  ng-show="componentsForm.$submitted"><a target="_blank" ng-href="/client/{{client.web_url}}" style="color:#FF0080; text-decoration: underline;"> Ver cambios </a></span>
                 </div>
               </div>
+              <!--Conditional section> Pannellum-->
+              <div ng-if="client.template_type=='pannellum'" >
+                <div class="row">
+                  <div class="col-md-5">
+                    <pannellum-admin></pannellum-admin>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="row">
+                      <h3> Escena </h3>
+                      <br>
+                      <div class="col-md-8" style="padding-left:0px;">
+                        <select type="text" class="form-control" ng-model="clAdCtrl.currentScene" ng-change="changeScene();">
+                          <option ng-repeat="(key, val) in pageContent.iframe_content.scenes" value="{{key}}" ng-selected="clAdCtrl.currentScene==key"> {{key}} </option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="button" class="btn default-btn"> Agregar escena </button>
+                      </div>
+                    </div>
+                    <br>
+                    <ul class="nav nav-tabs">
+                      <li class="active"><a href="#">Nuevo punto de interés</a></li>
+                      <li><a href="#">Editar punto de interés</a></li>
+                    </ul>
+                      <div ng-hide="editing_hotspot">
+                        <br>
+                        <p> Selecciona un punto en la imagen panorámica para agregar puntos de interés. </p>
+                        <button type="button" class="btn default-btn" ng-disabled="position_data==null"  ng-click="createHotspot();"> Agregar punto de interés </button>
+                      </div>
+                      <!--New hotspot menu-->
+                      <div ng-show="editing_hotspot">
+                        <div class="input-group  input-el">
+                          <select type="text" class="form-control" ng-model="newHotspot.type">
+                            <option value="info"> Información </option>
+                            <option value="scene"> Transición a otra escena </option>
+                          </select>
+                        </div>
+                        <div class="input-group  input-el">
+                          <span class="input-group-addon" id="addon-section-title">Descripción</span>
+                          <input type="text" name="hotspotID" class="form-control"  ng-model="newHotspot.text" aria-describedby="addon-section-title">
+                        </div>
+                        <div class="input-group  input-el" ng-show="newHotspot.type=='scene'">
+                          <label for="scenepicker">Escena objetivo:</label>
+                          <select id="scenepicker" type="text" class="form-control" ng-model="newHotspot.sceneId">
+                            <option ng-repeat="(key, val) in pageContent.iframe_content.scenes" value="{{key}}"> {{key}} </option>
+                          </select>
+                        </div>
+                        <div class="input-group  input-el">
+                          <button type="button" class="btn default-btn" ng-click="addHotspot();"> Guardar punto de interés </button>
+                        </div>
+                      </div>
+                      <!--Edit hotspot menu-->
+                  </div>
+                </div>
 
+              </div>
             </div>
           </form>
           <hr>

@@ -1,21 +1,44 @@
-angular.module('siteApp').controller("clientAdminController",["$scope","database", "socket",'fileUpload', function($scope,database, client, fileUpload){
+angular.module('siteApp').controller("clientAdminController",["$scope","database", "socket",'fileUpload',"$window", function($scope,database, client, fileUpload, $window){
+
+  var self=this;
 
   $scope.currentChats=[];
   $scope.currentTab=0;
   $scope.currentMessage="";
   $scope.myFiles=[];
-  $scope.currentClient="Test Client";
-
+  $scope.currentClient="Poids Plume";
+  $scope.position_data=null;
+  $scope.editing_hotspot=false;
+  $scope.newHotspot = {};
   //view variables
   $scope.activeTab="page-admin";
+  //Pannellum variables
+  this.currentScene="";
   //Admin connect
   client.emit("admin connect");
 
+  $scope.$watch(
+    function () {
+        return $window.position_data
+    }, function(n,o){
+       $scope.position_data=n;
+    }
+);
+
+$scope.$watch(
+  function () {
+      return $window.viewer
+  }, function(n,o){
+    console.log(n);
+     $scope.viewer=n;
+  }
+);
 
   $scope.changeClient = function(){
     database.getClients({name : $scope.currentClient}, function(data){
       $scope.client = data[0];
       $scope.pageContent = $scope.client.page_content;
+      self.currentScene=$scope.client.page_content.iframe_content.default.firstScene;
     });
   }
 
@@ -141,6 +164,37 @@ angular.module('siteApp').controller("clientAdminController",["$scope","database
 
   $scope.isFile = function(index){
     return typeof($scope.myFiles[index])=='undefined';
+  }
+
+  $scope.createHotspot = function(){
+    $scope.editing_hotspot=true;
+    console.log($scope.position_data);
+    $scope.newHotspot={
+                "pitch": $scope.position_data.pitch,
+                "yaw": $scope.position_data.yaw,
+                "type": "info",
+                "text": "Texto",
+                "sceneId": self.currentScene,
+                "targetYaw": 0,
+                "targetPitch": 0
+      };
+  }
+
+  $scope.changeScene=function(){
+    $.getScript("../node_modules/pannellum-mod/build/pannellum.js", function(){
+      $scope.viewer.loadScene(self.currentScene,0,0,0);
+    });
+  }
+
+  $scope.addHotspot=function(){
+      var hotspots = [];
+      for (i in $scope.pageContent.iframe_content.scenes[self.currentScene].hotSpots){
+        hotspots.push($scope.pageContent.iframe_content.scenes[self.currentScene].hotSpots[i]);
+      }
+      hotspots.push($scope.newHotspot);
+      $scope.pageContent.iframe_content.scenes[self.currentScene].hotSpots=hotspots;
+      $scope.editing_hotspot=false;
+      $scope.viewer.loadScene(self.currentScene,0,0,0);
   }
 
 }]);

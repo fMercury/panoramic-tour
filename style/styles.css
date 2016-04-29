@@ -271,7 +271,12 @@ img + .no-items {
 #chatbox p {
   margin-bottom: 3px; }
 
-/* Client center easing animations */
+/* Pannellum cursor*/
+.pannellum-cursor {
+  position: absolute;
+  color: white;
+  text-shadow: 2px 2px 1px #000000; }
+
 #panorama-container {
   display: inline-block;
   position: relative;
